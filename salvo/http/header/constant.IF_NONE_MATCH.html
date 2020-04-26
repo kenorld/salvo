@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `IF_NONE_MATCH` constant in crate `salvo`."><meta name="keywords" content="rust, rustlang, rust-lang, IF_NONE_MATCH"><title>salvo::http::header::IF_NONE_MATCH - Rust</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc constant"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../salvo/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a><div class="sidebar-elems"><p class='location'><a href='../../index.html'>salvo</a>::<wbr><a href='../index.html'>http</a>::<wbr><a href='index.html'>header</a></p><script>window.sidebarCurrent = {name: 'IF_NONE_MATCH', ty: 'constant', relpath: ''};</script><script defer src="sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='https://docs.rs/http/0.2.1/src/http/header/name.rs.html#79-81' title='goto source code'>[src]</a></span><span class='in-band'>Constant <a href='../../index.html'>salvo</a>::<wbr><a href='../index.html'>http</a>::<wbr><a href='index.html'>header</a>::<wbr><a class="constant" href=''>IF_NONE_MATCH</a></span></h1><pre class='rust const'>pub const IF_NONE_MATCH: <a class="struct" href="../../../salvo/http/header/struct.HeaderName.html" title="struct salvo::http::header::HeaderName">HeaderName</a>;</pre><div class='docblock'><p>Makes a request conditional based on the E-Tag.</p>
+<p>The If-None-Match HTTP request header makes the request conditional. For
+GET and HEAD methods, the server will send back the requested resource,
+with a 200 status, only if it doesn't have an ETag matching the given
+ones. For other methods, the request will be processed only if the
+eventually existing resource's ETag doesn't match any of the values
+listed.</p>
+<p>When the condition fails for GET and HEAD methods, then the server must
+return HTTP status code 304 (Not Modified). For methods that apply
+server-side changes, the status code 412 (Precondition Failed) is used.
+Note that the server generating a 304 response MUST generate any of the
+following header fields that would have been sent in a 200 (OK) response
+to the same request: Cache-Control, Content-Location, Date, ETag,
+Expires, and Vary.</p>
+<p>The comparison with the stored ETag uses the weak comparison algorithm,
+meaning two files are considered identical not only if they are
+identical byte to byte, but if the content is equivalent. For example,
+two pages that would differ only by the date of generation in the footer
+would be considered as identical.</p>
+<p>When used in combination with If-Modified-Since, it has precedence (if
+the server supports it).</p>
+<p>There are two common use cases:</p>
+<ul>
+<li>For <code>GET</code> and <code>HEAD</code> methods, to update a cached entity that has an associated ETag.</li>
+<li>For other methods, and in particular for <code>PUT</code>, <code>If-None-Match</code> used with
+the <code>*</code> value can be used to save a file not known to exist,
+guaranteeing that another upload didn't happen before, losing the data
+of the previous put; this problems is the variation of the lost update
+problem.</li>
+</ul>
+</div></section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "salvo";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script defer src="../../../search-index.js"></script></body></html>

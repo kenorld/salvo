@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["file",""]],"struct":[["FileChunk",""],["HtmlTextContent",""],["JsonTextContent",""],["NamedFile","A file with an associated name."],["NamedFileBuilder",""],["PlainTextContent",""],["XmlTextContent",""]],"trait":[["Writer",""]]});

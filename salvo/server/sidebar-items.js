@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["HyperHandler",""],["Server","The main `Novel` type: used to mount routes and catchers and launch the application."],["ServerConfig",""],["Timeouts","A settings struct containing a set of timeouts which can be applied to a server."]]});

@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `cookie` mod in crate `salvo`."><meta name="keywords" content="rust, rustlang, rust-lang, cookie"><title>salvo::http::cookie - Rust</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../salvo/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a><p class='location'>Module cookie</p><div class="sidebar-elems"><div class="block items"><ul><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li></ul></div><p class='location'><a href='../../index.html'>salvo</a>::<wbr><a href='../index.html'>http</a></p><script>window.sidebarCurrent = {name: 'cookie', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='https://docs.rs/cookie/0.12/src/cookie/lib.rs.html#1-1105' title='goto source code'>[src]</a></span><span class='in-band'>Module <a href='../../index.html'>salvo</a>::<wbr><a href='../index.html'>http</a>::<wbr><a class="mod" href=''>cookie</a></span></h1><div class='docblock'><p>HTTP cookie parsing and cookie jar management.</p>
+<p>This crates provides the <a href="struct.Cookie.html"><code>Cookie</code></a> type, which directly
+maps to an HTTP cookie, and the <a href="struct.CookieJar.html"><code>CookieJar</code></a> type,
+which allows for simple management of many cookies as well as encryption and
+signing of cookies for session management.</p>
+<h1 id="usage" class="section-header"><a href="#usage">Usage</a></h1>
+<p>Add the following to the <code>[dependencies]</code> section of your <code>Cargo.toml</code>:</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ<span class='tooltiptext'>This example is not tested</span></div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore">
+<span class="ident">cookie</span> <span class="op">=</span> <span class="string">&quot;0.12&quot;</span></pre></div>
+<p>Then add the following line to your crate root:</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ<span class='tooltiptext'>This example is not tested</span></div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore">
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">cookie</span>;</pre></div>
+<h1 id="features" class="section-header"><a href="#features">Features</a></h1>
+<p>This crates can be configured at compile-time through the following Cargo
+features:</p>
+<ul>
+<li>
+<p><strong>secure</strong> (disabled by default)</p>
+<p>Enables signed and private (signed + encrypted) cookie jars.</p>
+<p>When this feature is enabled, the
+<a href="struct.CookieJar.html#method.signed">signed</a> and
+<a href="struct.CookieJar.html#method.private">private</a> method of <code>CookieJar</code> and
+<a href="struct.SignedJar.html"><code>SignedJar</code></a> and
+<a href="struct.PrivateJar.html"><code>PrivateJar</code></a> structures are available. The jars
+act as &quot;children jars&quot;, allowing for easy retrieval and addition of signed
+and/or encrypted cookies to a cookie jar. When this feature is disabled,
+none of the types are available.</p>
+</li>
+<li>
+<p><strong>percent-encode</strong> (disabled by default)</p>
+<p>Enables percent encoding and decoding of names and values in cookies.</p>
+<p>When this feature is enabled, the
+<a href="struct.Cookie.html#method.encoded">encoded</a> and
+<a href="struct.Cookie.html#method.parse_encoded"><code>parse_encoded</code></a> methods of
+<code>Cookie</code> become available. The <code>encoded</code> method returns a wrapper around a
+<code>Cookie</code> whose <code>Display</code> implementation percent-encodes the name and value
+of the cookie. The <code>parse_encoded</code> method percent-decodes the name and
+value of a <code>Cookie</code> during parsing. When this feature is disabled, the
+<code>encoded</code> and <code>parse_encoded</code> methods are not available.</p>
+</li>
+</ul>
+<p>You can enable features via the <code>Cargo.toml</code> file:</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ<span class='tooltiptext'>This example is not tested</span></div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore">
+[<span class="ident">dependencies</span>.<span class="ident">cookie</span>]
+<span class="ident">features</span> <span class="op">=</span> [<span class="string">&quot;secure&quot;</span>, <span class="string">&quot;percent-encode&quot;</span>]</pre></div>
+</div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table><tr class='module-item'><td><a class="struct" href="struct.Cookie.html" title='salvo::http::cookie::Cookie struct'>Cookie</a></td><td class='docblock-short'><p>Representation of an HTTP cookie.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.CookieBuilder.html" title='salvo::http::cookie::CookieBuilder struct'>CookieBuilder</a></td><td class='docblock-short'><p>Structure that follows the builder pattern for building <code>Cookie</code> structs.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.CookieJar.html" title='salvo::http::cookie::CookieJar struct'>CookieJar</a></td><td class='docblock-short'><p>A collection of cookies that tracks its modifications.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.Delta.html" title='salvo::http::cookie::Delta struct'>Delta</a></td><td class='docblock-short'><p>Iterator over the changes to a cookie jar.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.EncodedCookie.html" title='salvo::http::cookie::EncodedCookie struct'>EncodedCookie</a></td><td class='docblock-short'><p>Wrapper around <code>Cookie</code> whose <code>Display</code> implementation percent-encodes the
+cookie's name and value.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.Iter.html" title='salvo::http::cookie::Iter struct'>Iter</a></td><td class='docblock-short'><p>Iterator over all of the cookies in a jar.</p>
+</td></tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table><tr class='module-item'><td><a class="enum" href="enum.ParseError.html" title='salvo::http::cookie::ParseError enum'>ParseError</a></td><td class='docblock-short'><p>Enum corresponding to a parsing error.</p>
+</td></tr><tr class='module-item'><td><a class="enum" href="enum.SameSite.html" title='salvo::http::cookie::SameSite enum'>SameSite</a></td><td class='docblock-short'><p>The <code>SameSite</code> cookie attribute.</p>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "salvo";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script defer src="../../../search-index.js"></script></body></html>
