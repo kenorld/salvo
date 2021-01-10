@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Method",""],["Router",""]]});
+initSidebarItems({"mod":[["filter",""]],"struct":[["DetectMatched",""],["PathState",""],["Router",""]],"type":[["Params",""]]});

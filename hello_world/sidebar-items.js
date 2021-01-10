@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["main",""]],"struct":[["hello_world",""],["hello_world2",""]]});

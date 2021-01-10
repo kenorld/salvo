@@ -1,3 +1,3 @@
 (function() {var implementors = {};
-implementors["salvo_core"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html\" title=\"trait core::ops::drop::Drop\">Drop</a> for <a class=\"struct\" href=\"salvo_core/http/form/struct.FilePart.html\" title=\"struct salvo_core::http::form::FilePart\">FilePart</a>","synthetic":false,"types":["salvo_core::http::form::FilePart"]}];
+implementors["salvo_core"] = [{"text":"impl Drop for FilePart","synthetic":false,"types":[]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

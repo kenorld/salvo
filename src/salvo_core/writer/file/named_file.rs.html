@@ -1,4 +1,7 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `core/src/writer/file/named_file.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>named_file.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script src="../../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../../salvo_core/index.html'><div class='logo-container'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `core/src/writer/file/named_file.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>named_file.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../../salvo_core/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+                <a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -449,8 +452,6 @@
 <span id="449">449</span>
 <span id="450">450</span>
 <span id="451">451</span>
-<span id="452">452</span>
-<span id="453">453</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">async_trait</span>::<span class="ident">async_trait</span>;
 <span class="kw">use</span> <span class="ident">bitflags</span>::<span class="ident">bitflags</span>;
@@ -550,7 +551,7 @@
                     <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;attachment&quot;</span>,
                 }
             };
-            <span class="kw">if</span> <span class="ident">disposition_type</span> <span class="op">=</span><span class="op">=</span> <span class="string">&quot;attachment&quot;</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="self">self</span>.<span class="ident">attached_filename</span>.<span class="ident">is_none</span>() {
+            <span class="kw">if</span> <span class="ident">disposition_type</span> <span class="op">=</span><span class="op">=</span> <span class="string">&quot;attachment&quot;</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">attached_filename</span>.<span class="ident">is_none</span>() {
                 <span class="kw">let</span> <span class="ident">filename</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">path</span>.<span class="ident">file_name</span>() {
                     <span class="prelude-val">Some</span>(<span class="ident">name</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">name</span>.<span class="ident">to_string_lossy</span>(),
                     <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
@@ -618,9 +619,8 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// use actix_files::NamedFile;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let file = NamedFile::open(&quot;foo.txt&quot;);</span>
+    <span class="doccomment">/// use salvo_core::writer::file::NamedFile;</span>
+    <span class="doccomment">/// let file = NamedFile::open(&quot;foo.txt&quot;.into());</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open</span>(<span class="ident">path</span>: <span class="ident">PathBuf</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NamedFile</span><span class="op">&gt;</span> {
         <span class="self">Self</span>::<span class="ident">builder</span>(<span class="ident">path</span>).<span class="ident">build</span>()
@@ -638,10 +638,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
     <span class="doccomment">/// # use std::io;</span>
-    <span class="doccomment">/// use actix_files::NamedFile;</span>
-    <span class="doccomment">///</span>
+    <span class="doccomment">/// # use salvo_core::writer::file::NamedFile;</span>
     <span class="doccomment">/// # fn path() -&gt; io::Result&lt;()&gt; {</span>
-    <span class="doccomment">/// let file = NamedFile::open(&quot;test.txt&quot;)?;</span>
+    <span class="doccomment">/// let file = NamedFile::open(&quot;test.txt&quot;.into())?;</span>
     <span class="doccomment">/// assert_eq!(file.path().as_os_str(), &quot;foo.txt&quot;);</span>
     <span class="doccomment">/// # Ok(())</span>
     <span class="doccomment">/// # }</span>
@@ -733,7 +732,7 @@
 
 <span class="attribute">#[<span class="ident">async_trait</span>]</span>
 <span class="kw">impl</span> <span class="ident">Writer</span> <span class="kw">for</span> <span class="ident">NamedFile</span> {
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">_conf</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ServerConfig</span><span class="op">&gt;</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">_depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">resp</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">_conf</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ServerConfig</span><span class="op">&gt;</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">_depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {
         <span class="kw">let</span> <span class="ident">etag</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">Flags</span>::<span class="ident">ETAG</span>) { <span class="self">self</span>.<span class="ident">etag</span>() } <span class="kw">else</span> { <span class="prelude-val">None</span> };
         <span class="kw">let</span> <span class="ident">last_modified</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">Flags</span>::<span class="ident">LAST_MODIFIED</span>) {
             <span class="self">self</span>.<span class="ident">last_modified</span>()
@@ -779,24 +778,24 @@
             <span class="bool-val">false</span>
         };
 
-        <span class="ident">resp</span>.<span class="ident">set_content_disposition</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">content_disposition</span>);
-        <span class="ident">resp</span>.<span class="ident">set_content_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">content_type</span>.<span class="ident">to_string</span>());
+        <span class="ident">res</span>.<span class="ident">set_content_disposition</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">content_disposition</span>);
+        <span class="ident">res</span>.<span class="ident">set_content_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">content_type</span>.<span class="ident">to_string</span>());
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">lm</span>) <span class="op">=</span> <span class="ident">last_modified</span> {
-            <span class="ident">resp</span>.<span class="ident">set_last_modified</span>(<span class="ident">lm</span>);
+            <span class="ident">res</span>.<span class="ident">set_last_modified</span>(<span class="ident">lm</span>);
         }
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">etag</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">etag</span> {
-            <span class="ident">resp</span>.<span class="ident">set_etag</span>(<span class="kw-2">&amp;</span><span class="ident">etag</span>);
+            <span class="ident">res</span>.<span class="ident">set_etag</span>(<span class="kw-2">&amp;</span><span class="ident">etag</span>);
         }
-        <span class="ident">resp</span>.<span class="ident">set_accept_range</span>(<span class="string">&quot;bytes&quot;</span>);
+        <span class="ident">res</span>.<span class="ident">set_accept_range</span>(<span class="string">&quot;bytes&quot;</span>);
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">length</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">metadata</span>.<span class="ident">len</span>();
         <span class="comment">// default compressing</span>
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">current_encoding</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">content_encoding</span> {
-            <span class="ident">resp</span>.<span class="ident">set_content_encoding</span>(<span class="ident">current_encoding</span>);
+            <span class="ident">res</span>.<span class="ident">set_content_encoding</span>(<span class="ident">current_encoding</span>);
         }
         <span class="comment">// else {</span>
-        <span class="comment">//     resp.set_content_length(length);</span>
+        <span class="comment">//     res.set_content_length(length);</span>
         <span class="comment">// }</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">offset</span> <span class="op">=</span> <span class="number">0</span>;
 
@@ -808,38 +807,38 @@
                     <span class="ident">length</span> <span class="op">=</span> <span class="ident">rangesvec</span>[<span class="number">0</span>].<span class="ident">length</span>;
                     <span class="ident">offset</span> <span class="op">=</span> <span class="ident">rangesvec</span>[<span class="number">0</span>].<span class="ident">start</span>;
                 } <span class="kw">else</span> {
-                    <span class="ident">resp</span>.<span class="ident">set_content_range</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;bytes */{}&quot;</span>, <span class="ident">length</span>));
-                    <span class="ident">resp</span>.<span class="ident">set_status_code</span>(<span class="ident">StatusCode</span>::<span class="ident">RANGE_NOT_SATISFIABLE</span>);
+                    <span class="ident">res</span>.<span class="ident">set_content_range</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;bytes */{}&quot;</span>, <span class="ident">length</span>));
+                    <span class="ident">res</span>.<span class="ident">set_status_code</span>(<span class="ident">StatusCode</span>::<span class="ident">RANGE_NOT_SATISFIABLE</span>);
                     <span class="kw">return</span>;
                 };
             } <span class="kw">else</span> {
-                <span class="ident">resp</span>.<span class="ident">set_status_code</span>(<span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>);
+                <span class="ident">res</span>.<span class="ident">set_status_code</span>(<span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>);
                 <span class="kw">return</span>;
             };
         }
 
         <span class="kw">if</span> <span class="ident">precondition_failed</span> {
-            <span class="ident">resp</span>.<span class="ident">set_status_code</span>(<span class="ident">StatusCode</span>::<span class="ident">PRECONDITION_FAILED</span>);
+            <span class="ident">res</span>.<span class="ident">set_status_code</span>(<span class="ident">StatusCode</span>::<span class="ident">PRECONDITION_FAILED</span>);
             <span class="kw">return</span>;
         } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">not_modified</span> {
-            <span class="ident">resp</span>.<span class="ident">set_status_code</span>(<span class="ident">StatusCode</span>::<span class="ident">NOT_MODIFIED</span>);
+            <span class="ident">res</span>.<span class="ident">set_status_code</span>(<span class="ident">StatusCode</span>::<span class="ident">NOT_MODIFIED</span>);
             <span class="kw">return</span>;
         }
 
         <span class="kw">if</span> <span class="ident">offset</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">length</span> <span class="op">!</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">metadata</span>.<span class="ident">len</span>() {
-            <span class="ident">resp</span>.<span class="ident">set_status_code</span>(<span class="ident">StatusCode</span>::<span class="ident">PARTIAL_CONTENT</span>);
-            <span class="ident">resp</span>.<span class="ident">set_content_range</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;bytes {}-{}/{}&quot;</span>, <span class="ident">offset</span>, <span class="ident">offset</span> <span class="op">+</span> <span class="ident">length</span> <span class="op">-</span> <span class="number">1</span>, <span class="self">self</span>.<span class="ident">metadata</span>.<span class="ident">len</span>()));
+            <span class="ident">res</span>.<span class="ident">set_status_code</span>(<span class="ident">StatusCode</span>::<span class="ident">PARTIAL_CONTENT</span>);
+            <span class="ident">res</span>.<span class="ident">set_content_range</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;bytes {}-{}/{}&quot;</span>, <span class="ident">offset</span>, <span class="ident">offset</span> <span class="op">+</span> <span class="ident">length</span> <span class="op">-</span> <span class="number">1</span>, <span class="self">self</span>.<span class="ident">metadata</span>.<span class="ident">len</span>()));
             <span class="kw">let</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">FileChunk</span> {
                 <span class="ident">offset</span>,
-                <span class="ident">chunk_size</span>: <span class="ident">cmp</span>::<span class="ident">min</span>(<span class="ident">length</span>, <span class="ident">offset</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">buffer_size</span>),
+                <span class="ident">chunk_size</span>: <span class="ident">cmp</span>::<span class="ident">min</span>(<span class="ident">length</span>, <span class="self">self</span>.<span class="ident">metadata</span>.<span class="ident">len</span>()),
                 <span class="ident">read_size</span>: <span class="number">0</span>,
                 <span class="ident">file</span>: <span class="self">self</span>.<span class="ident">file</span>,
                 <span class="ident">buffer_size</span>: <span class="self">self</span>.<span class="ident">buffer_size</span>,
             };
-            <span class="ident">resp</span>.<span class="ident">set_content_length</span>(<span class="ident">reader</span>.<span class="ident">chunk_size</span>);
-            <span class="ident">resp</span>.<span class="ident">streaming</span>(<span class="ident">reader</span>)
+            <span class="ident">res</span>.<span class="ident">set_content_length</span>(<span class="ident">reader</span>.<span class="ident">chunk_size</span>);
+            <span class="ident">res</span>.<span class="ident">streaming</span>(<span class="ident">reader</span>)
         } <span class="kw">else</span> {
-            <span class="ident">resp</span>.<span class="ident">set_status_code</span>(<span class="ident">StatusCode</span>::<span class="ident">OK</span>);
+            <span class="ident">res</span>.<span class="ident">set_status_code</span>(<span class="ident">StatusCode</span>::<span class="ident">OK</span>);
             <span class="kw">let</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">FileChunk</span> {
                 <span class="ident">offset</span>,
                 <span class="ident">file</span>: <span class="self">self</span>.<span class="ident">file</span>,
@@ -847,8 +846,8 @@
                 <span class="ident">read_size</span>: <span class="number">0</span>,
                 <span class="ident">buffer_size</span>: <span class="self">self</span>.<span class="ident">buffer_size</span>,
             };
-            <span class="ident">resp</span>.<span class="ident">set_content_length</span>(<span class="ident">length</span> <span class="op">-</span> <span class="ident">offset</span>);
-            <span class="ident">resp</span>.<span class="ident">streaming</span>(<span class="ident">reader</span>)
+            <span class="ident">res</span>.<span class="ident">set_content_length</span>(<span class="ident">length</span> <span class="op">-</span> <span class="ident">offset</span>);
+            <span class="ident">res</span>.<span class="ident">streaming</span>(<span class="ident">reader</span>)
         }
     }
 }
@@ -906,4 +905,4 @@
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../../";window.currentCrate = "salvo_core";</script><script src="../../../../aliases.js"></script><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script><script defer src="../../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../../";window.currentCrate = "salvo_core";</script><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script><script defer src="../../../../search-index.js"></script></body></html>

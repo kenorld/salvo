@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Method",""],["Router",""]]});
+initSidebarItems({"fn":[["any",""],["delete",""],["fn_filter",""],["get",""],["head",""],["options",""],["patch",""],["path",""],["post",""],["put",""]],"mod":[["filter",""]],"struct":[["DetectMatched",""],["FnFilter",""],["PathState",""],["Router",""]],"trait":[["Filter",""]],"type":[["Params",""]]});
