@@ -308,8 +308,6 @@
 <span id="305">305</span>
 <span id="306">306</span>
 <span id="307">307</span>
-<span id="308">308</span>
-<span id="309">309</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">async_trait</span>::<span class="ident">async_trait</span>;
 <span class="kw">use</span> <span class="ident">chrono</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
@@ -319,13 +317,11 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fs</span>::{<span class="self">self</span>, <span class="ident">Metadata</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">SystemTime</span>;
 
 <span class="kw">use</span> <span class="ident">salvo_core</span>::<span class="ident">depot</span>::<span class="ident">Depot</span>;
 <span class="kw">use</span> <span class="ident">salvo_core</span>::<span class="ident">http</span>::<span class="ident">errors</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">salvo_core</span>::<span class="ident">http</span>::{<span class="ident">Request</span>, <span class="ident">Response</span>};
-<span class="kw">use</span> <span class="ident">salvo_core</span>::<span class="ident">server</span>::<span class="ident">ServerConfig</span>;
 <span class="kw">use</span> <span class="ident">salvo_core</span>::<span class="ident">writer</span>::<span class="ident">file</span>::<span class="ident">NamedFile</span>;
 <span class="kw">use</span> <span class="ident">salvo_core</span>::<span class="ident">writer</span>::<span class="ident">Writer</span>;
 <span class="kw">use</span> <span class="ident">salvo_core</span>::<span class="ident">Handler</span>;
@@ -529,7 +525,7 @@
 
 <span class="attribute">#[<span class="ident">async_trait</span>]</span>
 <span class="kw">impl</span> <span class="ident">Handler</span> <span class="kw">for</span> <span class="ident">Static</span> {
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">conf</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ServerConfig</span><span class="op">&gt;</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {
         <span class="kw">let</span> <span class="ident">param</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">params</span>().<span class="ident">iter</span>().<span class="ident">find</span>(<span class="op">|</span>(<span class="ident">key</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">key</span>.<span class="ident">starts_with</span>(<span class="string">&#39;*&#39;</span>));
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">base_path</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="kw">_</span>, <span class="ident">value</span>)) <span class="op">=</span> <span class="ident">param</span> { <span class="ident">value</span> } <span class="kw">else</span> { <span class="ident">req</span>.<span class="ident">url</span>().<span class="ident">path</span>() }.<span class="ident">to_owned</span>();
         <span class="kw">if</span> <span class="ident">base_path</span>.<span class="ident">starts_with</span>(<span class="string">&#39;/&#39;</span>) <span class="op">|</span><span class="op">|</span> <span class="ident">base_path</span>.<span class="ident">starts_with</span>(<span class="string">&#39;\\&#39;</span>) {
@@ -551,7 +547,7 @@
                     <span class="kw">let</span> <span class="ident">ipath</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">join</span>(<span class="ident">ifile</span>);
                     <span class="kw">if</span> <span class="ident">ipath</span>.<span class="ident">exists</span>() {
                         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">named_file</span>) <span class="op">=</span> <span class="ident">NamedFile</span>::<span class="ident">open</span>(<span class="ident">ipath</span>) {
-                            <span class="ident">named_file</span>.<span class="ident">write</span>(<span class="ident">conf</span>, <span class="ident">req</span>, <span class="ident">depot</span>, <span class="ident">res</span>).<span class="kw">await</span>;
+                            <span class="ident">named_file</span>.<span class="ident">write</span>(<span class="ident">req</span>, <span class="ident">depot</span>, <span class="ident">res</span>).<span class="kw">await</span>;
                         } <span class="kw">else</span> {
                             <span class="ident">res</span>.<span class="ident">set_http_error</span>(<span class="ident">InternalServerError</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;file read error&quot;</span>.<span class="ident">into</span>()), <span class="prelude-val">None</span>));
                         }
@@ -577,7 +573,7 @@
                 }
             } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">path</span>.<span class="ident">is_file</span>() {
                 <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">named_file</span>) <span class="op">=</span> <span class="ident">NamedFile</span>::<span class="ident">open</span>(<span class="ident">path</span>) {
-                    <span class="ident">named_file</span>.<span class="ident">write</span>(<span class="ident">conf</span>, <span class="ident">req</span>, <span class="ident">depot</span>, <span class="ident">res</span>).<span class="kw">await</span>;
+                    <span class="ident">named_file</span>.<span class="ident">write</span>(<span class="ident">req</span>, <span class="ident">depot</span>, <span class="ident">res</span>).<span class="kw">await</span>;
                 } <span class="kw">else</span> {
                     <span class="ident">res</span>.<span class="ident">set_http_error</span>(<span class="ident">InternalServerError</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;file read error&quot;</span>.<span class="ident">into</span>()), <span class="prelude-val">None</span>));
                 }

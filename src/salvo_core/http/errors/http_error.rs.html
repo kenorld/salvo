@@ -204,18 +204,16 @@
 <span id="201">201</span>
 <span id="202">202</span>
 <span id="203">203</span>
-<span id="204">204</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">async_trait</span>::<span class="ident">async_trait</span>;
 <span class="kw">use</span> <span class="ident">http</span>::<span class="ident">StatusCode</span>;
 <span class="kw">use</span> <span class="ident">mime</span>::<span class="ident">Mime</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="kw">as</span> <span class="ident">StdError</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">http</span>::{<span class="ident">Request</span>, <span class="ident">Response</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Depot</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Writer</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Depot</span>, <span class="ident">ServerConfig</span>};
 
 <span class="kw">fn</span> <span class="ident">error_html</span>(<span class="ident">code</span>: <span class="ident">StatusCode</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">summary</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">detail</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
     <span class="macro">format</span><span class="macro">!</span>(
@@ -301,7 +299,7 @@
 }
 <span class="attribute">#[<span class="ident">async_trait</span>]</span>
 <span class="kw">impl</span> <span class="ident">Writer</span> <span class="kw">for</span> <span class="ident">HttpError</span> {
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">_conf</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ServerConfig</span><span class="op">&gt;</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">_depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">_depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {
         <span class="ident">res</span>.<span class="ident">set_status_code</span>(<span class="self">self</span>.<span class="ident">code</span>);
         <span class="kw">let</span> <span class="ident">format</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">http</span>::<span class="ident">guess_accept_mime</span>(<span class="ident">req</span>, <span class="prelude-val">None</span>);
         <span class="kw">let</span> (<span class="ident">format</span>, <span class="ident">data</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">format</span>);

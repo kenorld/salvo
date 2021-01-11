@@ -63,21 +63,19 @@
 <span id="60">60</span>
 <span id="61">61</span>
 <span id="62">62</span>
-<span id="63">63</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">file</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">file</span>::<span class="kw-2">*</span>;
 
 <span class="kw">use</span> <span class="ident">async_trait</span>::<span class="ident">async_trait</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">http</span>::{<span class="ident">Request</span>, <span class="ident">Response</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Depot</span>, <span class="ident">ServerConfig</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Depot</span>;
 
 <span class="attribute">#[<span class="ident">async_trait</span>]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Writer</span>: <span class="ident">Send</span> {
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;future must be used&quot;</span>]</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">conf</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ServerConfig</span><span class="op">&gt;</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>);
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>);
 }
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HtmlTextContent</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">T</span>);
@@ -86,7 +84,7 @@
 <span class="kw">where</span>
     <span class="ident">T</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
 {
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">_conf</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ServerConfig</span><span class="op">&gt;</span>, <span class="ident">_req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">_depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">_req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">_depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {
         <span class="ident">res</span>.<span class="ident">render</span>(<span class="string">&quot;text/html&quot;</span>, <span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_ref</span>().<span class="ident">as_bytes</span>());
     }
 }
@@ -97,7 +95,7 @@
 <span class="kw">where</span>
     <span class="ident">T</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
 {
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">_conf</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ServerConfig</span><span class="op">&gt;</span>, <span class="ident">_req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">_depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">_req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">_depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {
         <span class="ident">res</span>.<span class="ident">render</span>(<span class="string">&quot;application/json&quot;</span>, <span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_ref</span>().<span class="ident">as_bytes</span>());
     }
 }
@@ -108,7 +106,7 @@
 <span class="kw">where</span>
     <span class="ident">T</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
 {
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">_conf</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ServerConfig</span><span class="op">&gt;</span>, <span class="ident">_req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">_depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">_req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">_depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {
         <span class="ident">res</span>.<span class="ident">render</span>(<span class="string">&quot;text/plain&quot;</span>, <span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_ref</span>().<span class="ident">as_bytes</span>());
     }
 }
@@ -119,14 +117,14 @@
 <span class="kw">where</span>
     <span class="ident">T</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
 {
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">_conf</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ServerConfig</span><span class="op">&gt;</span>, <span class="ident">_req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">_depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">_req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">_depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {
         <span class="ident">res</span>.<span class="ident">render</span>(<span class="string">&quot;text/xml&quot;</span>, <span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_ref</span>().<span class="ident">as_bytes</span>());
     }
 }
 
 <span class="attribute">#[<span class="ident">async_trait</span>]</span>
 <span class="kw">impl</span> <span class="ident">Writer</span> <span class="kw">for</span> () {
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">_conf</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ServerConfig</span><span class="op">&gt;</span>, <span class="ident">_req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">_depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">_resp</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {}
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">_req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">_depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">_resp</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {}
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "salvo_core";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

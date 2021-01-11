@@ -18,17 +18,9 @@
 <span id="15">15</span>
 <span id="16">16</span>
 <span id="17">17</span>
-<span id="18">18</span>
-<span id="19">19</span>
-<span id="20">20</span>
-<span id="21">21</span>
-<span id="22">22</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">salvo_core</span> <span class="kw">as</span> <span class="ident">core</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">salvo_core</span>::<span class="kw-2">*</span>;
-
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;macro&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">salvo_macro</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;extra&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">salvo_extra</span> <span class="kw">as</span> <span class="ident">extra</span>;
@@ -36,14 +28,12 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">prelude</span> {
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">depot</span>::<span class="ident">Depot</span>;
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">http</span>::{<span class="ident">Request</span>, <span class="ident">Response</span>};
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">routing</span>::<span class="ident">Router</span>;
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">routing</span>::<span class="ident">filter</span>;
+    <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">routing</span>::<span class="ident">Router</span>;
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">server</span>::{<span class="ident">Server</span>, <span class="ident">ServerConfig</span>};
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">writer</span>::<span class="kw-2">*</span>;
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Handler</span>;
     <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">async_trait</span>::<span class="ident">async_trait</span>;
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;macro&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">salvo_macro</span>::<span class="ident">fn_handler</span>;
     <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 }
 </pre></div>

@@ -451,7 +451,6 @@
 <span id="448">448</span>
 <span id="449">449</span>
 <span id="450">450</span>
-<span id="451">451</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">async_trait</span>::<span class="ident">async_trait</span>;
 <span class="kw">use</span> <span class="ident">bitflags</span>::<span class="ident">bitflags</span>;
@@ -460,7 +459,6 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fs</span>::{<span class="ident">File</span>, <span class="ident">Metadata</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::{<span class="ident">Deref</span>, <span class="ident">DerefMut</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::{<span class="ident">SystemTime</span>, <span class="ident">UNIX_EPOCH</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">cmp</span>, <span class="ident">io</span>};
 
@@ -471,8 +469,8 @@
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">http</span>::<span class="ident">header</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">http</span>::<span class="ident">range</span>::<span class="ident">HttpRange</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">http</span>::{<span class="ident">Request</span>, <span class="ident">Response</span>, <span class="ident">StatusCode</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Depot</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Writer</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Depot</span>, <span class="ident">ServerConfig</span>};
 
 <span class="macro">bitflags</span><span class="macro">!</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">Flags</span>: <span class="ident">u8</span> {
@@ -732,7 +730,7 @@
 
 <span class="attribute">#[<span class="ident">async_trait</span>]</span>
 <span class="kw">impl</span> <span class="ident">Writer</span> <span class="kw">for</span> <span class="ident">NamedFile</span> {
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">_conf</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ServerConfig</span><span class="op">&gt;</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">_depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">_depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {
         <span class="kw">let</span> <span class="ident">etag</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">Flags</span>::<span class="ident">ETAG</span>) { <span class="self">self</span>.<span class="ident">etag</span>() } <span class="kw">else</span> { <span class="prelude-val">None</span> };
         <span class="kw">let</span> <span class="ident">last_modified</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">Flags</span>::<span class="ident">LAST_MODIFIED</span>) {
             <span class="self">self</span>.<span class="ident">last_modified</span>()

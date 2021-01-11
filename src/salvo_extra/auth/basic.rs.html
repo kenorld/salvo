@@ -75,20 +75,12 @@
 <span id="72">72</span>
 <span id="73">73</span>
 <span id="74">74</span>
-<span id="75">75</span>
-<span id="76">76</span>
-<span id="77">77</span>
-<span id="78">78</span>
 </pre><div class="example-wrap"><pre class="rust ">
-
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
-
 <span class="kw">use</span> <span class="ident">async_trait</span>::<span class="ident">async_trait</span>;
 
 <span class="kw">use</span> <span class="ident">salvo_core</span>::<span class="ident">depot</span>::<span class="ident">Depot</span>;
-<span class="kw">use</span> <span class="ident">salvo_core</span>::<span class="ident">http</span>::{<span class="ident">Request</span>, <span class="ident">Response</span>, <span class="ident">StatusCode</span>};
 <span class="kw">use</span> <span class="ident">salvo_core</span>::<span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">AUTHORIZATION</span>;
-<span class="kw">use</span> <span class="ident">salvo_core</span>::<span class="ident">server</span>::<span class="ident">ServerConfig</span>;
+<span class="kw">use</span> <span class="ident">salvo_core</span>::<span class="ident">http</span>::{<span class="ident">Request</span>, <span class="ident">Response</span>, <span class="ident">StatusCode</span>};
 <span class="kw">use</span> <span class="ident">salvo_core</span>::<span class="ident">Handler</span>;
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BasicAuthHandler</span> {
@@ -138,7 +130,7 @@
 }
 <span class="attribute">#[<span class="ident">async_trait</span>]</span>
 <span class="kw">impl</span> <span class="ident">Handler</span> <span class="kw">for</span> <span class="ident">BasicAuthHandler</span> {
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_conf</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ServerConfig</span><span class="op">&gt;</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">auth</span>) <span class="op">=</span> <span class="ident">req</span>.<span class="ident">headers</span>().<span class="ident">get</span>(<span class="ident">AUTHORIZATION</span>) {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">auth</span>) <span class="op">=</span> <span class="ident">auth</span>.<span class="ident">to_str</span>() {
                 <span class="kw">if</span> <span class="ident">auth</span>.<span class="ident">starts_with</span>(<span class="string">&quot;Basic&quot;</span>) {
