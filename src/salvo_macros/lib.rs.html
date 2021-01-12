@@ -71,6 +71,17 @@
 <span id="68">68</span>
 <span id="69">69</span>
 <span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">proc_macro</span>;
 <span class="kw">use</span> <span class="ident">proc_macro</span>::<span class="ident">TokenStream</span>;
@@ -93,13 +104,24 @@
     }
 
     <span class="kw">match</span> <span class="ident">sig</span>.<span class="ident">inputs</span>.<span class="ident">len</span>() {
-        <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="kw">return</span> <span class="ident">syn</span>::<span class="ident">Error</span>::<span class="ident">new_spanned</span>(<span class="kw-2">&amp;</span><span class="ident">sig</span>.<span class="ident">inputs</span>, <span class="string">&quot;0 args found in handler&quot;</span>)
+                .<span class="ident">to_compile_error</span>()
+                .<span class="ident">into</span>()
+        }
+        <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="ident">ts</span>: <span class="ident">TokenStream</span> <span class="op">=</span> <span class="macro">quote</span><span class="macro">!</span> {<span class="ident">_depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> ::<span class="ident">salvo</span>::<span class="ident">Depot</span>}.<span class="ident">into</span>();
             <span class="ident">sig</span>.<span class="ident">inputs</span>.<span class="ident">insert</span>(<span class="number">0</span>, <span class="ident">syn</span>::<span class="macro">parse_macro_input</span><span class="macro">!</span>(<span class="ident">ts</span> <span class="kw">as</span> <span class="ident">syn</span>::<span class="ident">FnArg</span>));
+            <span class="kw">let</span> <span class="ident">ts</span>: <span class="ident">TokenStream</span> <span class="op">=</span> <span class="macro">quote</span><span class="macro">!</span> {<span class="ident">_req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> ::<span class="ident">salvo</span>::<span class="ident">Request</span>}.<span class="ident">into</span>();
+            <span class="ident">sig</span>.<span class="ident">inputs</span>.<span class="ident">insert</span>(<span class="number">0</span>, <span class="ident">syn</span>::<span class="macro">parse_macro_input</span><span class="macro">!</span>(<span class="ident">ts</span> <span class="kw">as</span> <span class="ident">syn</span>::<span class="ident">FnArg</span>));
+        }
+        <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="kw">let</span> <span class="ident">ts</span>: <span class="ident">TokenStream</span> <span class="op">=</span> <span class="macro">quote</span><span class="macro">!</span> {<span class="ident">_depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> ::<span class="ident">salvo</span>::<span class="ident">Depot</span>}.<span class="ident">into</span>();
+            <span class="ident">sig</span>.<span class="ident">inputs</span>.<span class="ident">insert</span>(<span class="number">1</span>, <span class="ident">syn</span>::<span class="macro">parse_macro_input</span><span class="macro">!</span>(<span class="ident">ts</span> <span class="kw">as</span> <span class="ident">syn</span>::<span class="ident">FnArg</span>));
         }
         <span class="number">3</span> <span class="op">=</span><span class="op">&gt;</span> {}
         <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="kw">return</span> <span class="ident">syn</span>::<span class="ident">Error</span>::<span class="ident">new_spanned</span>(<span class="kw-2">&amp;</span><span class="ident">sig</span>.<span class="ident">inputs</span>, <span class="string">&quot;numbers of fn is not supports&quot;</span>)
+            <span class="kw">return</span> <span class="ident">syn</span>::<span class="ident">Error</span>::<span class="ident">new_spanned</span>(<span class="kw-2">&amp;</span><span class="ident">sig</span>.<span class="ident">inputs</span>, <span class="string">&quot;too many args in handler&quot;</span>)
                 .<span class="ident">to_compile_error</span>()
                 .<span class="ident">into</span>()
         }
