@@ -18,9 +18,16 @@
 <span id="15">15</span>
 <span id="16">16</span>
 <span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">salvo_core</span> <span class="kw">as</span> <span class="ident">core</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">salvo_core</span>::<span class="kw-2">*</span>;
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;macros&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">salvo_macros</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;extra&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">salvo_extra</span> <span class="kw">as</span> <span class="ident">extra</span>;
@@ -34,7 +41,8 @@
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">writer</span>::<span class="kw-2">*</span>;
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Handler</span>;
     <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">async_trait</span>::<span class="ident">async_trait</span>;
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;macros&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">salvo_macros</span>::<span class="ident">fn_handler</span>;
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "salvo";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
