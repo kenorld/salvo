@@ -82,6 +82,7 @@
 <span id="79">79</span>
 <span id="80">80</span>
 <span id="81">81</span>
+<span id="82">82</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">proc_macro</span>;
 <span class="kw">use</span> <span class="ident">proc_macro</span>::<span class="ident">TokenStream</span>;
@@ -129,6 +130,7 @@
 
     <span class="kw">let</span> <span class="ident">sdef</span> <span class="op">=</span> <span class="macro">quote</span><span class="macro">!</span> {
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
+        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
         #<span class="ident">vis</span> <span class="kw">struct</span> #<span class="ident">name</span>;
         <span class="kw">impl</span> #<span class="ident">name</span> {
             #(#<span class="ident">attrs</span>)<span class="op">*</span>
