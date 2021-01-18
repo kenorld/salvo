@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["auth",""],["serve",""]]});
+initSidebarItems({"mod":[["auth",""],["cors","CORS Filters"],["serve",""],["ws","Websocket"]]});

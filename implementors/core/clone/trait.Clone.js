@@ -1,4 +1,4 @@
 (function() {var implementors = {};
-implementors["salvo_core"] = [{"text":"impl Clone for FieldHeaders","synthetic":false,"types":[]},{"text":"impl Clone for HttpRange","synthetic":false,"types":[]},{"text":"impl&lt;F:&nbsp;Clone&gt; Clone for FnFilter&lt;F&gt;","synthetic":false,"types":[]},{"text":"impl Clone for Timeouts","synthetic":false,"types":[]},{"text":"impl Clone for Protocol","synthetic":false,"types":[]}];
-implementors["salvo_extra"] = [{"text":"impl Clone for Options","synthetic":false,"types":[]},{"text":"impl Clone for Static","synthetic":false,"types":[]}];
+implementors["salvo_core"] = [{"text":"impl Clone for FieldHeaders","synthetic":false,"types":[]},{"text":"impl Clone for HttpRange","synthetic":false,"types":[]},{"text":"impl&lt;F:&nbsp;Clone&gt; Clone for FnFilter&lt;F&gt;","synthetic":false,"types":[]}];
+implementors["salvo_extra"] = [{"text":"impl Clone for Options","synthetic":false,"types":[]},{"text":"impl Clone for Static","synthetic":false,"types":[]},{"text":"impl Clone for Cors","synthetic":false,"types":[]},{"text":"impl Clone for Builder","synthetic":false,"types":[]},{"text":"impl Clone for Message","synthetic":false,"types":[]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

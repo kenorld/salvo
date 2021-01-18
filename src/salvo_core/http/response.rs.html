@@ -472,6 +472,21 @@
 <span id="469">469</span>
 <span id="470">470</span>
 <span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="kw">as</span> <span class="ident">StdError</span>;
@@ -494,9 +509,8 @@
 
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">errors</span>::<span class="ident">HttpError</span>;
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">header</span>::<span class="ident">SET_COOKIE</span>;
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">header</span>::{<span class="self">self</span>, <span class="ident">HeaderMap</span>, <span class="ident">CONTENT_DISPOSITION</span>};
+<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">header</span>::{<span class="self">self</span>, <span class="ident">HeaderMap</span>, <span class="ident">InvalidHeaderValue</span>, <span class="ident">CONTENT_DISPOSITION</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">http</span>::<span class="ident">Request</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ServerConfig</span>;
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">type_complexity</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ResponseBody</span> {
@@ -517,21 +531,21 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">cookies</span>: <span class="ident">CookieJar</span>,
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">body</span>: <span class="ident">ResponseBody</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">server_config</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ServerConfig</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">allowed_media_types</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Mime</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 
     <span class="ident">is_commited</span>: <span class="ident">bool</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Response</span> {
     <span class="doccomment">/// Construct a blank Response</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">conf</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ServerConfig</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Response</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">allowed_media_types</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Mime</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Response</span> {
         <span class="ident">Response</span> {
             <span class="ident">status_code</span>: <span class="prelude-val">None</span>, <span class="comment">// Start with no response code.</span>
             <span class="ident">http_error</span>: <span class="prelude-val">None</span>,
             <span class="ident">body</span>: <span class="ident">ResponseBody</span>::<span class="prelude-val">None</span>, <span class="comment">// Start with no writers.</span>
             <span class="ident">headers</span>: <span class="ident">HeaderMap</span>::<span class="ident">new</span>(),
             <span class="ident">cookies</span>: <span class="ident">CookieJar</span>::<span class="ident">new</span>(),
-            <span class="ident">server_config</span>: <span class="ident">conf</span>,
+            <span class="ident">allowed_media_types</span>,
             <span class="ident">is_commited</span>: <span class="bool-val">false</span>,
         }
     }
@@ -553,8 +567,7 @@
     <span class="comment">// client.</span>
     <span class="comment">//</span>
     <span class="comment">// `write_back` consumes the `Response`.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write_back</span>(<span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">hyper</span>::<span class="ident">Response</span><span class="op">&lt;</span><span class="ident">hyper</span>::<span class="ident">Body</span><span class="op">&gt;</span>) {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write_back</span>(<span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">hyper</span>::<span class="ident">Response</span><span class="op">&lt;</span><span class="ident">hyper</span>::<span class="ident">Body</span><span class="op">&gt;</span>) {
         <span class="kw-2">*</span><span class="ident">res</span>.<span class="ident">headers_mut</span>() <span class="op">=</span> <span class="self">self</span>.<span class="ident">headers</span>;
 
         <span class="comment">// Default to a 404 if no response code was set</span>
@@ -807,37 +820,54 @@
         <span class="self">self</span>.<span class="ident">commit</span>();
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">redirect_other</span><span class="op">&lt;</span><span class="ident">U</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">url</span>: <span class="ident">U</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">redirect_other</span><span class="op">&lt;</span><span class="ident">U</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">url</span>: <span class="ident">U</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">InvalidHeaderValue</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">status_code</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">StatusCode</span>::<span class="ident">SEE_OTHER</span>);
         <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">headers</span>().<span class="ident">contains_key</span>(<span class="ident">header</span>::<span class="ident">CONTENT_TYPE</span>) {
-            <span class="self">self</span>.<span class="ident">headers</span>.<span class="ident">insert</span>(<span class="ident">header</span>::<span class="ident">CONTENT_TYPE</span>, <span class="string">&quot;text/html&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>());
+            <span class="self">self</span>.<span class="ident">headers</span>.<span class="ident">insert</span>(<span class="ident">header</span>::<span class="ident">CONTENT_TYPE</span>, <span class="string">&quot;text/html&quot;</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>);
         }
-        <span class="self">self</span>.<span class="ident">headers</span>.<span class="ident">insert</span>(<span class="ident">header</span>::<span class="ident">LOCATION</span>, <span class="ident">url</span>.<span class="ident">as_ref</span>().<span class="ident">parse</span>().<span class="ident">unwrap</span>());
+        <span class="self">self</span>.<span class="ident">headers</span>.<span class="ident">insert</span>(<span class="ident">header</span>::<span class="ident">LOCATION</span>, <span class="ident">url</span>.<span class="ident">as_ref</span>().<span class="ident">parse</span>()<span class="question-mark">?</span>);
         <span class="self">self</span>.<span class="ident">commit</span>();
+        <span class="prelude-val">Ok</span>(())
     }
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_content_disposition</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
-        <span class="self">self</span>.<span class="ident">headers_mut</span>().<span class="ident">insert</span>(<span class="ident">CONTENT_DISPOSITION</span>, <span class="ident">value</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>());
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_content_disposition</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">InvalidHeaderValue</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">headers_mut</span>().<span class="ident">insert</span>(<span class="ident">CONTENT_DISPOSITION</span>, <span class="ident">value</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>);
+        <span class="prelude-val">Ok</span>(())
     }
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_content_encoding</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
-        <span class="self">self</span>.<span class="ident">headers_mut</span>().<span class="ident">insert</span>(<span class="ident">CONTENT_ENCODING</span>, <span class="ident">value</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>());
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_content_encoding</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">InvalidHeaderValue</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">headers_mut</span>().<span class="ident">insert</span>(<span class="ident">CONTENT_ENCODING</span>, <span class="ident">value</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>);
+        <span class="prelude-val">Ok</span>(())
     }
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_content_length</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">u64</span>) {
-        <span class="self">self</span>.<span class="ident">headers_mut</span>().<span class="ident">insert</span>(<span class="ident">CONTENT_LENGTH</span>, <span class="ident">value</span>.<span class="ident">to_string</span>().<span class="ident">parse</span>().<span class="ident">unwrap</span>());
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_content_length</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">InvalidHeaderValue</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">headers_mut</span>().<span class="ident">insert</span>(<span class="ident">CONTENT_LENGTH</span>, <span class="ident">value</span>.<span class="ident">to_string</span>().<span class="ident">parse</span>()<span class="question-mark">?</span>);
+        <span class="prelude-val">Ok</span>(())
     }
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_content_range</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
-        <span class="self">self</span>.<span class="ident">headers_mut</span>().<span class="ident">insert</span>(<span class="ident">CONTENT_RANGE</span>, <span class="ident">value</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>());
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_content_range</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">InvalidHeaderValue</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">headers_mut</span>().<span class="ident">insert</span>(<span class="ident">CONTENT_RANGE</span>, <span class="ident">value</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>);
+        <span class="prelude-val">Ok</span>(())
     }
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_content_type</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
-        <span class="self">self</span>.<span class="ident">headers_mut</span>().<span class="ident">insert</span>(<span class="ident">CONTENT_TYPE</span>, <span class="ident">value</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>());
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_content_type</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">InvalidHeaderValue</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">headers_mut</span>().<span class="ident">insert</span>(<span class="ident">CONTENT_TYPE</span>, <span class="ident">value</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>);
+        <span class="prelude-val">Ok</span>(())
     }
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_accept_range</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
-        <span class="self">self</span>.<span class="ident">headers_mut</span>().<span class="ident">insert</span>(<span class="ident">ACCEPT_RANGES</span>, <span class="ident">value</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>());
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_accept_range</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">InvalidHeaderValue</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">headers_mut</span>().<span class="ident">insert</span>(<span class="ident">ACCEPT_RANGES</span>, <span class="ident">value</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>);
+        <span class="prelude-val">Ok</span>(())
     }
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_last_modified</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">HttpDate</span>) {
-        <span class="self">self</span>.<span class="ident">headers_mut</span>().<span class="ident">insert</span>(<span class="ident">LAST_MODIFIED</span>, <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">value</span>).<span class="ident">parse</span>().<span class="ident">unwrap</span>());
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_last_modified</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">HttpDate</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">InvalidHeaderValue</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">headers_mut</span>().<span class="ident">insert</span>(<span class="ident">LAST_MODIFIED</span>, <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">value</span>).<span class="ident">parse</span>()<span class="question-mark">?</span>);
+        <span class="prelude-val">Ok</span>(())
     }
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_etag</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
-        <span class="self">self</span>.<span class="ident">headers_mut</span>().<span class="ident">insert</span>(<span class="ident">ETAG</span>, <span class="ident">value</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>());
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_etag</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">InvalidHeaderValue</span><span class="op">&gt;</span>{
+        <span class="self">self</span>.<span class="ident">headers_mut</span>().<span class="ident">insert</span>(<span class="ident">ETAG</span>, <span class="ident">value</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>);
+        <span class="prelude-val">Ok</span>(())
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">commit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
@@ -891,8 +921,8 @@
     {
         <span class="kw">let</span> <span class="ident">guess</span> <span class="op">=</span> <span class="ident">mime_guess</span>::<span class="ident">from_path</span>(<span class="ident">path</span>.<span class="ident">as_ref</span>());
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">mime</span>) <span class="op">=</span> <span class="ident">guess</span>.<span class="ident">first</span>() {
-            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">server_config</span>.<span class="ident">allowed_media_types</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="number">0</span> {
-                <span class="kw">for</span> <span class="ident">m</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">server_config</span>.<span class="ident">allowed_media_types</span> {
+            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">allowed_media_types</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="number">0</span> {
+                <span class="kw">for</span> <span class="ident">m</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">allowed_media_types</span> {
                     <span class="kw">if</span> <span class="ident">m</span>.<span class="ident">type_</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">mime</span>.<span class="ident">type_</span>() <span class="op">&amp;&amp;</span> <span class="ident">m</span>.<span class="ident">subtype</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">mime</span>.<span class="ident">subtype</span>() {
                         <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">mime</span>);
                     }

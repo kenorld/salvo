@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["cors","Example"]],"struct":[["Builder","A constructed via `salvo::cors()`."],["Cors","A wrapping filter constructed via `salvo::cors()`."]]});

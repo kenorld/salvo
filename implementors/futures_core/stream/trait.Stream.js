@@ -1,3 +1,4 @@
 (function() {var implementors = {};
 implementors["salvo_core"] = [{"text":"impl&lt;S:&nbsp;TryStream&gt; Stream for FieldData&lt;'_, S&gt; <span class=\"where fmt-newline\">where<br>&nbsp;&nbsp;&nbsp;&nbsp;S::Ok: BodyChunk,<br>&nbsp;&nbsp;&nbsp;&nbsp;S::Error: Into&lt;ReadError&gt;,&nbsp;</span>","synthetic":false,"types":[]},{"text":"impl Stream for FileChunk","synthetic":false,"types":[]}];
+implementors["salvo_extra"] = [{"text":"impl Stream for WebSocket","synthetic":false,"types":[]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
