@@ -53,7 +53,7 @@
 
 <span class="kw">type</span> <span class="ident">BoxError</span> <span class="op">=</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span>;
 
-<span class="doccomment">/// Errors that can happen inside warp.</span>
+<span class="doccomment">/// Errors that can happen inside salvo.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Error</span> {
     <span class="ident">inner</span>: <span class="ident">BoxError</span>,
 }
