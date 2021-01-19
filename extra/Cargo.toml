@@ -1,6 +1,6 @@
 [package]
 name = "salvo_extra"
-version = "0.4.0"
+version = "0.4.5"
 authors = [ "Chrislearn Young <chrislearn@hotmail.com>" ]
 edition = "2018"
 description = """
@@ -24,7 +24,7 @@ cookie = { version = "0.14.3", features = [ "percent-encode" ] }
 jsonwebtoken = "7.2.0"
 mime = "0.3.16"
 percent-encoding = "2.1.0"
-salvo_core = { version = "0.4.5", path = "../core", default-features = false }
+salvo_core = { version = "0.4", path = "../core", default-features = false }
 
 serde = "1.0.118"
 serde_derive = "1.0.118"
