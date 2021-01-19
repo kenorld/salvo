@@ -535,7 +535,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">create_incoming_hyper_server</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">incoming</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">hyper</span>::<span class="ident">Server</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Accept</span><span class="op">&lt;</span><span class="ident">Conn</span> <span class="op">=</span> <span class="ident">S</span>::<span class="prelude-val">Ok</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">S</span>::<span class="ident">Error</span><span class="op">&gt;</span>, <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">hyper</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">create_bind_incoming_hyper_server</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">incoming</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">hyper</span>::<span class="ident">Server</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Accept</span><span class="op">&lt;</span><span class="ident">Conn</span> <span class="op">=</span> <span class="ident">S</span>::<span class="prelude-val">Ok</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">S</span>::<span class="ident">Error</span><span class="op">&gt;</span>, <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">hyper</span>::<span class="ident">Error</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">S</span>: <span class="ident">TryStream</span> <span class="op">+</span> <span class="ident">Send</span>,
         <span class="ident">S</span>::<span class="prelude-val">Ok</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">Unpin</span>,
@@ -632,26 +632,26 @@
     <span class="doccomment">/// # Panics</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Panics if we are unable to bind to the provided address.</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">incoming</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">incoming</span>: <span class="ident">I</span>)
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">bind_incoming</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">incoming</span>: <span class="ident">I</span>)
     <span class="kw">where</span>
         <span class="ident">I</span>: <span class="ident">TryStream</span> <span class="op">+</span> <span class="ident">Send</span>,
         <span class="ident">I</span>::<span class="prelude-val">Ok</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">Unpin</span>,
         <span class="ident">I</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     {
-        <span class="self">self</span>.<span class="ident">try_incoming</span>(<span class="ident">incoming</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>();
+        <span class="self">self</span>.<span class="ident">try_bind_incoming</span>(<span class="ident">incoming</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>();
     }
 
     <span class="doccomment">/// Run this `Server` forever on the current thread with a specific stream</span>
     <span class="doccomment">/// of incoming connections.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This can be used for Unix Domain Sockets, or TLS, etc.</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">try_incoming</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">incoming</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">hyper</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">try_bind_incoming</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">incoming</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">hyper</span>::<span class="ident">Error</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">I</span>: <span class="ident">TryStream</span> <span class="op">+</span> <span class="ident">Send</span>,
         <span class="ident">I</span>::<span class="prelude-val">Ok</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">Unpin</span>,
         <span class="ident">I</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     {
-        <span class="kw">let</span> <span class="ident">srv</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">create_incoming_hyper_server</span>(<span class="ident">incoming</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">srv</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">create_bind_incoming_hyper_server</span>(<span class="ident">incoming</span>)<span class="question-mark">?</span>;
         <span class="ident">tracing</span>::<span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;listening with custom incoming&quot;</span>);
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="ident">srv</span>.<span class="kw">await</span> {
             <span class="ident">tracing</span>::<span class="macro">error</span><span class="macro">!</span>(<span class="string">&quot;server error: {}&quot;</span>, <span class="ident">err</span>);
@@ -661,13 +661,13 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">incoming_with_graceful_shutdown</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">incoming</span>: <span class="ident">I</span>, <span class="ident">signal</span>: <span class="kw">impl</span> <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> ()<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>)
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">bind_incoming_with_graceful_shutdown</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">incoming</span>: <span class="ident">I</span>, <span class="ident">signal</span>: <span class="kw">impl</span> <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> ()<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>)
     <span class="kw">where</span>
         <span class="ident">I</span>: <span class="ident">TryStream</span> <span class="op">+</span> <span class="ident">Send</span>,
         <span class="ident">I</span>::<span class="prelude-val">Ok</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">Unpin</span>,
         <span class="ident">I</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     {
-        <span class="self">self</span>.<span class="ident">try_incoming_with_graceful_shutdown</span>(<span class="ident">incoming</span>, <span class="ident">signal</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>();
+        <span class="self">self</span>.<span class="ident">try_bind_incoming_with_graceful_shutdown</span>(<span class="ident">incoming</span>, <span class="ident">signal</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>();
     }
     <span class="doccomment">/// Setup this `Server` with a specific stream of incoming connections and a</span>
     <span class="doccomment">/// signal to initiate graceful shutdown.</span>
@@ -678,7 +678,7 @@
     <span class="doccomment">/// process.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns a `Future` that can be executed on any runtime.</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">try_incoming_with_graceful_shutdown</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">try_bind_incoming_with_graceful_shutdown</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(
         <span class="self">self</span>,
         <span class="ident">incoming</span>: <span class="ident">I</span>,
         <span class="ident">signal</span>: <span class="kw">impl</span> <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> ()<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
@@ -688,7 +688,7 @@
         <span class="ident">I</span>::<span class="prelude-val">Ok</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">Unpin</span>,
         <span class="ident">I</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     {
-        <span class="kw">let</span> <span class="ident">srv</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">create_incoming_hyper_server</span>(<span class="ident">incoming</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">srv</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">create_bind_incoming_hyper_server</span>(<span class="ident">incoming</span>)<span class="question-mark">?</span>;
         <span class="ident">tracing</span>::<span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;listening with custom incoming&quot;</span>);
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="ident">srv</span>.<span class="ident">with_graceful_shutdown</span>(<span class="ident">signal</span>).<span class="kw">await</span> {
             <span class="ident">tracing</span>::<span class="macro">error</span><span class="macro">!</span>(<span class="string">&quot;server error: {}&quot;</span>, <span class="ident">err</span>);

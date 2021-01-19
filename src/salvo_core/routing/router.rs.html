@@ -375,7 +375,7 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">put</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Handler</span>, <span class="ident">I</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">H</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">put</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Handler</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">H</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">push</span>(<span class="ident">Router</span>::<span class="ident">new</span>().<span class="ident">filter</span>(<span class="ident">filter</span>::<span class="ident">put</span>()).<span class="ident">handle</span>(<span class="ident">handler</span>))
     }
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">put_when</span><span class="op">&lt;</span><span class="ident">H</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">func</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>
