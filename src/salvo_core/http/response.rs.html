@@ -656,27 +656,27 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">render_json</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Serialize</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>) {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">data</span>) <span class="op">=</span> <span class="ident">serde_json</span>::<span class="ident">to_string</span>(<span class="ident">data</span>) {
-            <span class="self">self</span>.<span class="ident">render</span>(<span class="string">&quot;application/json&quot;</span>, <span class="ident">data</span>.<span class="ident">as_bytes</span>());
+            <span class="self">self</span>.<span class="ident">render</span>(<span class="string">&quot;application/json; charset=utf-8&quot;</span>, <span class="ident">data</span>.<span class="ident">as_bytes</span>());
         } <span class="kw">else</span> {
             <span class="self">self</span>.<span class="ident">set_status_code</span>(<span class="ident">StatusCode</span>::<span class="ident">INTERNAL_SERVER_ERROR</span>);
             <span class="kw">let</span> <span class="ident">emsg</span> <span class="op">=</span> <span class="ident">ErrorWrap</span>::<span class="ident">new</span>(<span class="string">&quot;server_error&quot;</span>, <span class="string">&quot;server error&quot;</span>, <span class="string">&quot;error when serialize object to json&quot;</span>);
-            <span class="self">self</span>.<span class="ident">render</span>(<span class="string">&quot;application/json&quot;</span>, <span class="ident">serde_json</span>::<span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="ident">emsg</span>).<span class="ident">unwrap</span>().<span class="ident">as_bytes</span>());
+            <span class="self">self</span>.<span class="ident">render</span>(<span class="string">&quot;application/json; charset=utf-8&quot;</span>, <span class="ident">serde_json</span>::<span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="ident">emsg</span>).<span class="ident">unwrap</span>().<span class="ident">as_bytes</span>());
         }
     }
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">render_json_text</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
-        <span class="self">self</span>.<span class="ident">render</span>(<span class="string">&quot;application/json&quot;</span>, <span class="ident">data</span>.<span class="ident">as_bytes</span>());
+        <span class="self">self</span>.<span class="ident">render</span>(<span class="string">&quot;application/json; charset=utf-8&quot;</span>, <span class="ident">data</span>.<span class="ident">as_bytes</span>());
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">render_html_text</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
-        <span class="self">self</span>.<span class="ident">render</span>(<span class="string">&quot;text/html&quot;</span>, <span class="ident">data</span>.<span class="ident">as_bytes</span>());
+        <span class="self">self</span>.<span class="ident">render</span>(<span class="string">&quot;text/html; charset=utf-8&quot;</span>, <span class="ident">data</span>.<span class="ident">as_bytes</span>());
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">render_plain_text</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
-        <span class="self">self</span>.<span class="ident">render</span>(<span class="string">&quot;text/plain&quot;</span>, <span class="ident">data</span>.<span class="ident">as_bytes</span>());
+        <span class="self">self</span>.<span class="ident">render</span>(<span class="string">&quot;text/plain; charset=utf-8&quot;</span>, <span class="ident">data</span>.<span class="ident">as_bytes</span>());
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">render_xml_text</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
-        <span class="self">self</span>.<span class="ident">render</span>(<span class="string">&quot;text/xml&quot;</span>, <span class="ident">data</span>.<span class="ident">as_bytes</span>());
+        <span class="self">self</span>.<span class="ident">render</span>(<span class="string">&quot;text/xml; charset=utf-8&quot;</span>, <span class="ident">data</span>.<span class="ident">as_bytes</span>());
     }
     <span class="comment">// RenderBinary is like RenderFile() except that it instead of a file on disk,</span>
     <span class="comment">// it renders store from memory (which could be a file that has not been written,</span>
