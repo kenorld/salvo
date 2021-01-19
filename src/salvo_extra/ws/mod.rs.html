@@ -360,22 +360,22 @@
 <span id="357">357</span>
 <span id="358">358</span>
 <span id="359">359</span>
+<span id="360">360</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Websocket</span>
 
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">future</span>::<span class="ident">Future</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">pin</span>::<span class="ident">Pin</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">task</span>::{<span class="ident">Context</span>, <span class="ident">Poll</span>};
 
 <span class="kw">use</span> <span class="ident">async_trait</span>::<span class="ident">async_trait</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">future</span>, <span class="ident">ready</span>, <span class="ident">FutureExt</span>, <span class="ident">Sink</span>, <span class="ident">Stream</span>, <span class="ident">TryFutureExt</span>};
-<span class="kw">use</span> <span class="ident">headers</span>::{<span class="ident">Connection</span>, <span class="ident">HeaderMapExt</span>, <span class="ident">SecWebsocketKey</span>, <span class="ident">SecWebsocketAccept</span>,  <span class="ident">Upgrade</span>};
+<span class="kw">use</span> <span class="ident">headers</span>::{<span class="ident">Connection</span>, <span class="ident">HeaderMapExt</span>, <span class="ident">SecWebsocketAccept</span>, <span class="ident">SecWebsocketKey</span>, <span class="ident">Upgrade</span>};
 <span class="kw">use</span> <span class="ident">hyper</span>::<span class="ident">upgrade</span>::<span class="ident">OnUpgrade</span>;
 <span class="kw">use</span> <span class="ident">salvo_core</span>::<span class="ident">http</span>::<span class="ident">errors</span>::<span class="ident">HttpError</span>;
 <span class="kw">use</span> <span class="ident">salvo_core</span>::<span class="ident">http</span>::{<span class="ident">header</span>, <span class="ident">StatusCode</span>};
-<span class="kw">use</span> <span class="ident">salvo_core</span>::{<span class="ident">Depot</span>, <span class="ident">Handler</span>, <span class="ident">Error</span>, <span class="ident">Request</span>, <span class="ident">Response</span>};
+<span class="kw">use</span> <span class="ident">salvo_core</span>::{<span class="ident">Depot</span>, <span class="ident">Error</span>, <span class="ident">Handler</span>, <span class="ident">Request</span>, <span class="ident">Response</span>};
 <span class="kw">use</span> <span class="ident">tokio_tungstenite</span>::{
     <span class="ident">tungstenite</span>::<span class="ident">protocol</span>::{<span class="self">self</span>, <span class="ident">WebSocketConfig</span>},
     <span class="ident">WebSocketStream</span>,
@@ -403,8 +403,11 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">callback</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">WsHandler</span> { <span class="ident">callback</span>, <span class="ident">config</span>: <span class="prelude-val">None</span> }
     }
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_config</span>(<span class="ident">callback</span>:<span class="ident">F</span>, <span class="ident">config</span>: <span class="ident">WebSocketConfig</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">WsHandler</span> { <span class="ident">callback</span>, <span class="ident">config</span>: <span class="prelude-val">Some</span>(<span class="ident">config</span>) }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_config</span>(<span class="ident">callback</span>: <span class="ident">F</span>, <span class="ident">config</span>: <span class="ident">WebSocketConfig</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="ident">WsHandler</span> {
+            <span class="ident">callback</span>,
+            <span class="ident">config</span>: <span class="prelude-val">Some</span>(<span class="ident">config</span>),
+        }
     }
 
     <span class="comment">// config</span>
@@ -428,15 +431,13 @@
 }
 
 <span class="attribute">#[<span class="ident">async_trait</span>]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">U</span>, <span class="ident">S</span><span class="op">&gt;</span> <span class="ident">Handler</span> <span class="kw">for</span> <span class="ident">WsHandler</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="ident">Handler</span> <span class="kw">for</span> <span class="ident">WsHandler</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>
 <span class="kw">where</span>
-    <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">U</span> <span class="op">+</span> <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="ident">U</span>: <span class="ident">FnOnce</span>(<span class="ident">WebSocket</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">S</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="ident">S</span>: <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> ()<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+    <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">WebSocket</span>) <span class="op">+</span> <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="ident">depot</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Depot</span>, <span class="ident">res</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {
         <span class="kw">let</span> <span class="ident">req_headers</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">headers</span>();
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="string">&quot;upgrade&quot;</span>) <span class="op">=</span> <span class="ident">req_headers</span>.<span class="ident">get</span>(<span class="ident">header</span>::<span class="ident">CONNECTION</span>).<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span><span class="ident">v</span>.<span class="ident">to_str</span>().<span class="ident">ok</span>()) {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="string">&quot;upgrade&quot;</span>) <span class="op">=</span> <span class="ident">req_headers</span>.<span class="ident">get</span>(<span class="ident">header</span>::<span class="ident">CONNECTION</span>).<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">to_str</span>().<span class="ident">ok</span>()) {
         } <span class="kw">else</span> {
             <span class="ident">res</span>.<span class="ident">set_http_error</span>(<span class="ident">HttpError</span> {
                 <span class="ident">code</span>: <span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>,
@@ -446,7 +447,7 @@
             });
             <span class="kw">return</span>;
         }
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="string">&quot;websocket&quot;</span>) <span class="op">=</span> <span class="ident">req_headers</span>.<span class="ident">get</span>(<span class="ident">header</span>::<span class="ident">UPGRADE</span>).<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span><span class="ident">v</span>.<span class="ident">to_str</span>().<span class="ident">ok</span>()) {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="string">&quot;websocket&quot;</span>) <span class="op">=</span> <span class="ident">req_headers</span>.<span class="ident">get</span>(<span class="ident">header</span>::<span class="ident">UPGRADE</span>).<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">to_str</span>().<span class="ident">ok</span>()) {
         } <span class="kw">else</span> {
             <span class="ident">res</span>.<span class="ident">set_http_error</span>(<span class="ident">HttpError</span> {
                 <span class="ident">code</span>: <span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>,
@@ -456,7 +457,7 @@
             });
             <span class="kw">return</span>;
         }
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="string">&quot;13&quot;</span>) <span class="op">=</span> <span class="ident">req_headers</span>.<span class="ident">get</span>(<span class="ident">header</span>::<span class="ident">SEC_WEBSOCKET_VERSION</span>).<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span><span class="ident">v</span>.<span class="ident">to_str</span>().<span class="ident">ok</span>()) {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="string">&quot;13&quot;</span>) <span class="op">=</span> <span class="ident">req_headers</span>.<span class="ident">get</span>(<span class="ident">header</span>::<span class="ident">SEC_WEBSOCKET_VERSION</span>).<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">to_str</span>().<span class="ident">ok</span>()) {
         } <span class="kw">else</span> {
             <span class="ident">res</span>.<span class="ident">set_http_error</span>(<span class="ident">HttpError</span> {
                 <span class="ident">code</span>: <span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>,
@@ -478,20 +479,21 @@
             <span class="kw">return</span>;
         };
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">on_upgrade</span>) <span class="op">=</span> <span class="ident">req</span>.<span class="ident">extensions_mut</span>().<span class="ident">remove</span>::<span class="op">&lt;</span><span class="ident">OnUpgrade</span><span class="op">&gt;</span>() {
-            <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> (<span class="self">self</span>.<span class="ident">callback</span>)(<span class="ident">req</span>, <span class="ident">depot</span>);
             <span class="kw">let</span> <span class="ident">config</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">clone</span>();
-            <span class="kw">let</span> <span class="ident">fut</span> <span class="op">=</span> <span class="ident">on_upgrade</span>
+            <span class="kw">let</span> <span class="ident">socket</span> <span class="op">=</span> <span class="ident">on_upgrade</span>
                 .<span class="ident">and_then</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">upgraded</span><span class="op">|</span> {
                     <span class="ident">tracing</span>::<span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;websocket upgrade complete&quot;</span>);
                     <span class="ident">WebSocket</span>::<span class="ident">from_raw_socket</span>(<span class="ident">upgraded</span>, <span class="ident">protocol</span>::<span class="ident">Role</span>::<span class="ident">Server</span>, <span class="ident">config</span>).<span class="ident">map</span>(<span class="prelude-val">Ok</span>)
                 })
-                .<span class="ident">and_then</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">socket</span><span class="op">|</span> <span class="ident">handle</span>(<span class="ident">socket</span>).<span class="ident">map</span>(<span class="prelude-val">Ok</span>))
-                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">result</span><span class="op">|</span> {
-                    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="ident">result</span> {
-                        <span class="ident">tracing</span>::<span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;ws upgrade error: {}&quot;</span>, <span class="ident">err</span>);
-                    }
-                });
-            ::<span class="ident">tokio</span>::<span class="ident">task</span>::<span class="ident">spawn</span>(<span class="ident">fut</span>);
+                .<span class="kw">await</span>;
+            <span class="kw">match</span> <span class="ident">socket</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">socket</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    (<span class="self">self</span>.<span class="ident">callback</span>)(<span class="ident">req</span>, <span class="ident">depot</span>, <span class="ident">socket</span>);
+                }
+                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">tracing</span>::<span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;ws upgrade error: {}&quot;</span>, <span class="ident">e</span>);
+                }
+            };
         } <span class="kw">else</span> {
             <span class="ident">tracing</span>::<span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;ws couldn&#39;t be upgraded since no upgrade state was present&quot;</span>);
         }
