@@ -31,7 +31,7 @@ any runtime.</p>
 }
     <span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">oneshot</span>::<span class="ident">channel</span>();
     <span class="kw">let</span> (<span class="ident">addr</span>, <span class="ident">server</span>) <span class="op">=</span> <span class="ident">Server</span>::<span class="ident">new</span>(<span class="ident">Router</span>::<span class="ident">new</span>().<span class="ident">get</span>(<span class="ident">hello_world</span>))
-        .<span class="ident">bind_with_graceful_shutdown</span>(([<span class="number">127</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>], <span class="number">3030</span>), <span class="kw">async</span> {
+        .<span class="ident">bind_with_graceful_shutdown</span>(([<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>], <span class="number">3030</span>), <span class="kw">async</span> {
             <span class="ident">rx</span>.<span class="kw">await</span>.<span class="ident">ok</span>();
     });
 

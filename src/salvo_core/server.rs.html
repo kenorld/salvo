@@ -593,7 +593,7 @@
     <span class="doccomment">/// # fn main() {</span>
     <span class="doccomment">///     let (tx, rx) = oneshot::channel();</span>
     <span class="doccomment">///     let (addr, server) = Server::new(Router::new().get(hello_world))</span>
-    <span class="doccomment">///         .bind_with_graceful_shutdown(([127, 0, 0, 1], 3030), async {</span>
+    <span class="doccomment">///         .bind_with_graceful_shutdown(([0, 0, 0, 0], 3030), async {</span>
     <span class="doccomment">///             rx.await.ok();</span>
     <span class="doccomment">///     });</span>
     <span class="doccomment">///</span>
