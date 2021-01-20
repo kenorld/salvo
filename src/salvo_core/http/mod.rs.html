@@ -40,6 +40,7 @@
 <span id="37">37</span>
 <span id="38">38</span>
 <span id="39">39</span>
+<span id="40">40</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// #![feature(specialization)]</span>
 <span class="comment">// #![feature(proc_macro_hygiene)]</span>
@@ -72,6 +73,7 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">range</span>::<span class="ident">HttpRange</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">request</span>::<span class="ident">Request</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">response</span>::{<span class="ident">Response</span>, <span class="ident">ResponseBody</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">errors</span>::{<span class="ident">HttpError</span>, <span class="ident">ReadError</span>};
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">header</span>;
 
@@ -81,4 +83,5 @@
     <span class="ident">accept</span>.<span class="ident">first</span>().<span class="ident">unwrap_or</span>(<span class="kw-2">&amp;</span><span class="ident">dmime</span>).<span class="ident">to_string</span>().<span class="ident">parse</span>().<span class="ident">unwrap_or</span>(<span class="ident">dmime</span>)
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "salvo_core";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="salvo_core"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

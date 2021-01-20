@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["auth",""],["cors","CORS Filters"],["serve",""],["ws","Websocket"]]});
+initSidebarItems({"mod":[["auth",""],["cors","CORS Filters"],["serve",""],["sse","Server-Sent Events (SSE)"],["ws","Websocket"]]});
