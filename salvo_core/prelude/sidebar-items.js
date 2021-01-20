@@ -1,0 +1,1 @@
+initSidebarItems({"attr":[["async_trait",""],["fn_handler",""]],"struct":[["Request","The `Request` given to all `Middleware`."],["Response","The response representation given to `Middleware`"],["Router",""],["StatusCode","An HTTP status code (`status-code` in RFC 7230 et al.)."]],"trait":[["Handler",""]]});

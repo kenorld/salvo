@@ -314,27 +314,35 @@
 <span id="311">311</span>
 <span id="312">312</span>
 <span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Server-Sent Events (SSE)</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # Example</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//!</span>
+<span class="doccomment">//! ```no_run</span>
 <span class="doccomment">//! use std::time::Duration;</span>
 <span class="doccomment">//! use std::convert::Infallible;</span>
 <span class="doccomment">//! use futures::{stream::iter, Stream};</span>
+<span class="doccomment">//! </span>
+<span class="doccomment">//! use salvo_core::prelude::*;</span>
+<span class="doccomment">//! use salvo_extra::sse::{self, SseEvent};</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! fn sse_events() -&gt; impl Stream&lt;Item = Result&lt;Event, Infallible&gt;&gt; {</span>
+<span class="doccomment">//! fn sse_events() -&gt; impl Stream&lt;Item = Result&lt;SseEvent, Infallible&gt;&gt; {</span>
 <span class="doccomment">//!     iter(vec![</span>
-<span class="doccomment">//!         Ok(Event::default().data(&quot;unnamed event&quot;)),</span>
+<span class="doccomment">//!         Ok(SseEvent::default().data(&quot;unnamed event&quot;)),</span>
 <span class="doccomment">//!         Ok(</span>
-<span class="doccomment">//!             Event::default().event(&quot;chat&quot;)</span>
+<span class="doccomment">//!             SseEvent::default().name(&quot;chat&quot;)</span>
 <span class="doccomment">//!             .data(&quot;chat message&quot;)</span>
 <span class="doccomment">//!         ),</span>
 <span class="doccomment">//!         Ok(</span>
-<span class="doccomment">//!             Event::default().id(13.to_string())</span>
-<span class="doccomment">//!             .event(&quot;chat&quot;)</span>
+<span class="doccomment">//!             SseEvent::default().id(13.to_string())</span>
+<span class="doccomment">//!             .name(&quot;chat&quot;)</span>
 <span class="doccomment">//!             .data(&quot;other chat message\nwith next line&quot;)</span>
 <span class="doccomment">//!             .retry(Duration::from_millis(5000))</span>
 <span class="doccomment">//!         )</span>
@@ -344,7 +352,11 @@
 <span class="doccomment">//! async fn handle(res: &amp;mut Response) {</span>
 <span class="doccomment">//!     sse::streaming(res, sse_events());</span>
 <span class="doccomment">//! }</span>
-<span class="doccomment">//! let router = Router::new().path(&quot;push-notifications&quot;).get(handle);</span>
+<span class="doccomment">//! #[tokio::main]</span>
+<span class="doccomment">//! async fn main() {</span>
+<span class="doccomment">//!     let router = Router::new().path(&quot;push-notifications&quot;).get(handle);</span>
+<span class="doccomment">//!     Server::new(router).bind(([0, 0, 0, 0], 3131)).await;</span>
+<span class="doccomment">//! }</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Each field already is event which can be sent to client.</span>

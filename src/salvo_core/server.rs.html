@@ -488,6 +488,7 @@
 <span id="485">485</span>
 <span id="486">486</span>
 <span id="487">487</span>
+<span id="488">488</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="kw">as</span> <span class="ident">StdError</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">future</span>::<span class="ident">Future</span>;
@@ -582,18 +583,19 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```no_run</span>
-    <span class="doccomment">/// use salvo::Filter;</span>
-    <span class="doccomment">/// use futures::future::TryFutureExt;</span>
+    <span class="doccomment">/// use salvo_core::prelude::*;</span>
     <span class="doccomment">/// use tokio::sync::oneshot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// #[fn_handler]</span>
-    <span class="doccomment">/// async fn hello_world1(res: &amp;mut Response) {</span>
+    <span class="doccomment">/// async fn hello_world(res: &amp;mut Response) {</span>
     <span class="doccomment">///     res.render_plain_text(&quot;Hello World!&quot;);</span>
     <span class="doccomment">/// }</span>
-    <span class="doccomment">/// # fn main() {</span>
+    <span class="doccomment">/// </span>
+    <span class="doccomment">/// #[tokio::main]</span>
+    <span class="doccomment">/// async fn main() {</span>
     <span class="doccomment">///     let (tx, rx) = oneshot::channel();</span>
-    <span class="doccomment">///     let (addr, server) = Server::new(Router::new().get(hello_world))</span>
-    <span class="doccomment">///         .bind_with_graceful_shutdown(([0, 0, 0, 0], 3030), async {</span>
+    <span class="doccomment">///     let router = Router::new().get(hello_world);</span>
+    <span class="doccomment">///     let server = Server::new(router).bind_with_graceful_shutdown(([0, 0, 0, 0], 3131), async {</span>
     <span class="doccomment">///             rx.await.ok();</span>
     <span class="doccomment">///     });</span>
     <span class="doccomment">///</span>
@@ -602,7 +604,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">///     // Later, start the shutdown...</span>
     <span class="doccomment">///     let _ = tx.send(());</span>
-    <span class="doccomment">/// # }</span>
+    <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">bind_with_graceful_shutdown</span>(<span class="self">self</span>, <span class="ident">addr</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">SocketAddr</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>, <span class="ident">signal</span>: <span class="kw">impl</span> <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> ()<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>) {
         <span class="self">self</span>.<span class="ident">try_bind_with_graceful_shutdown</span>(<span class="ident">addr</span>, <span class="ident">signal</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>();
