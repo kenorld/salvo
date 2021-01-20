@@ -707,27 +707,27 @@
     }
 }
 
-<span class="comment">// #[cfg(test)]</span>
-<span class="comment">// mod tests {</span>
-<span class="comment">//     use super::*;</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+<span class="kw">mod</span> <span class="ident">tests</span> {
+    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
-<span class="comment">//     #[test]</span>
-<span class="comment">//     fn file_cert_key() {</span>
-<span class="comment">//         TlsConfigBuilder::new()</span>
-<span class="comment">//             .key_path(&quot;examples/tls/key.rsa&quot;)</span>
-<span class="comment">//             .cert_path(&quot;examples/tls/cert.pem&quot;)</span>
-<span class="comment">//             .build()</span>
-<span class="comment">//             .unwrap();</span>
-<span class="comment">//     }</span>
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">file_cert_key</span>() {
+        <span class="ident">TlsConfigBuilder</span>::<span class="ident">new</span>()
+            .<span class="ident">key_path</span>(<span class="string">&quot;../examples/tls/key.rsa&quot;</span>)
+            .<span class="ident">cert_path</span>(<span class="string">&quot;../examples/tls/cert.pem&quot;</span>)
+            .<span class="ident">build</span>()
+            .<span class="ident">unwrap</span>();
+    }
 
-<span class="comment">//     #[test]</span>
-<span class="comment">//     fn bytes_cert_key() {</span>
-<span class="comment">//         let key = include_str!(&quot;../../examples/tls/key.rsa&quot;);</span>
-<span class="comment">//         let cert = include_str!(&quot;../../examples/tls/cert.pem&quot;);</span>
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">bytes_cert_key</span>() {
+        <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="macro">include_str</span><span class="macro">!</span>(<span class="string">&quot;../../examples/tls/key.rsa&quot;</span>);
+        <span class="kw">let</span> <span class="ident">cert</span> <span class="op">=</span> <span class="macro">include_str</span><span class="macro">!</span>(<span class="string">&quot;../../examples/tls/cert.pem&quot;</span>);
 
-<span class="comment">//         TlsConfigBuilder::new().key(key.as_bytes()).cert(cert.as_bytes()).build().unwrap();</span>
-<span class="comment">//     }</span>
-<span class="comment">// }</span>
+        <span class="ident">TlsConfigBuilder</span>::<span class="ident">new</span>().<span class="ident">key</span>(<span class="ident">key</span>.<span class="ident">as_bytes</span>()).<span class="ident">cert</span>(<span class="ident">cert</span>.<span class="ident">as_bytes</span>()).<span class="ident">build</span>().<span class="ident">unwrap</span>();
+    }
+}
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="salvo_core"></div>
     <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
