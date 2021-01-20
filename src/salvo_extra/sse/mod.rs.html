@@ -314,9 +314,6 @@
 <span id="311">311</span>
 <span id="312">312</span>
 <span id="313">313</span>
-<span id="314">314</span>
-<span id="315">315</span>
-<span id="316">316</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Server-Sent Events (SSE)</span>
 <span class="doccomment">//!</span>
@@ -326,7 +323,6 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! use std::time::Duration;</span>
 <span class="doccomment">//! use std::convert::Infallible;</span>
-<span class="doccomment">//! use warp::{Filter, sse::Event};</span>
 <span class="doccomment">//! use futures::{stream::iter, Stream};</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! fn sse_events() -&gt; impl Stream&lt;Item = Result&lt;Event, Infallible&gt;&gt; {</span>
@@ -344,12 +340,11 @@
 <span class="doccomment">//!         )</span>
 <span class="doccomment">//!     ])</span>
 <span class="doccomment">//! }</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! let app = warp::path(&quot;push-notifications&quot;)</span>
-<span class="doccomment">//!     .and(warp::get())</span>
-<span class="doccomment">//!     .map(|| {</span>
-<span class="doccomment">//!         warp::sse::reply(warp::sse::keep_alive().stream(sse_events()))</span>
-<span class="doccomment">//!     });</span>
+<span class="doccomment">//! #[fn_handler]</span>
+<span class="doccomment">//! async fn handle(res: &amp;mut Response) {</span>
+<span class="doccomment">//!     sse::streaming(res, sse_events());</span>
+<span class="doccomment">//! }</span>
+<span class="doccomment">//! let router = Router::new().path(&quot;push-notifications&quot;).get(handle);</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Each field already is event which can be sent to client.</span>
@@ -391,7 +386,6 @@
     <span class="ident">name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="ident">id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DataType</span><span class="op">&gt;</span>,
-    <span class="ident">event</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="ident">comment</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="ident">retry</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>,
 }
@@ -420,8 +414,8 @@
 
     <span class="doccomment">/// Set Server-sent event event</span>
     <span class="doccomment">/// Event name field (&quot;event:&lt;event-name&gt;&quot;)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">event</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">event</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SseEvent</span> {
-        <span class="self">self</span>.<span class="ident">event</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">event</span>.<span class="ident">into</span>());
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">event</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SseEvent</span> {
+        <span class="self">self</span>.<span class="ident">name</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">event</span>.<span class="ident">into</span>());
         <span class="self">self</span>
     }
 
@@ -448,9 +442,9 @@
             <span class="ident">f</span>.<span class="ident">write_char</span>(<span class="string">&#39;\n&#39;</span>)<span class="question-mark">?</span>;
         }
 
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">event</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">event</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">name</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">name</span> {
             <span class="string">&quot;event:&quot;</span>.<span class="ident">fmt</span>(<span class="ident">f</span>)<span class="question-mark">?</span>;
-            <span class="ident">event</span>.<span class="ident">fmt</span>(<span class="ident">f</span>)<span class="question-mark">?</span>;
+            <span class="ident">name</span>.<span class="ident">fmt</span>(<span class="ident">f</span>)<span class="question-mark">?</span>;
             <span class="ident">f</span>.<span class="ident">write_char</span>(<span class="string">&#39;\n&#39;</span>)<span class="question-mark">?</span>;
         }
 
