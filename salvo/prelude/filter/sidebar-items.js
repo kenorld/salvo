@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["delete",""],["fn_filter",""],["get",""],["head",""],["options",""],["patch",""],["path",""],["post",""],["put",""]],"struct":[["FnFilter",""]],"trait":[["Filter",""]]});
