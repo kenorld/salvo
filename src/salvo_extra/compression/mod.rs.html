@@ -139,6 +139,10 @@
 <span id="136">136</span>
 <span id="137">137</span>
 <span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Compress the body of a response.</span>
 
@@ -228,52 +232,56 @@
     }
 }
 
-<span class="doccomment">/// Create a wrapping filter that compresses the Body of a [`Response`](crate::reply::Response)</span>
+<span class="doccomment">/// Create a wrapping filter that compresses the Body of a [`ResponseBody`](salvo_core::http::ResponseBody)</span>
 <span class="doccomment">/// using gzip, adding `content-encoding: gzip` to the Response&#39;s [`HeaderMap`](hyper::HeaderMap)</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Example</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">/// use salvo_core::prelude::*;</span>
+<span class="doccomment">/// use salvo_extra::compression;</span>
+<span class="doccomment">/// use salvo_extra::serve::StaticFile;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// let route = salvo::get()</span>
-<span class="doccomment">///     .and(salvo::path::end())</span>
-<span class="doccomment">///     .and(salvo::fs::file(&quot;./README.md&quot;))</span>
-<span class="doccomment">///     .with(salvo::compression::gzip());</span>
+<span class="doccomment">/// let router = Router::new()</span>
+<span class="doccomment">///     .after(compression::gzip())</span>
+<span class="doccomment">///     .and(StaticFile::neww(&quot;./README.md&quot;));</span>
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">gzip</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CompressionHandler</span> {
     <span class="ident">CompressionHandler</span>::<span class="ident">new</span>(<span class="ident">CompressionAlgo</span>::<span class="ident">GZIP</span>)
 }
 
-<span class="doccomment">/// Create a wrapping filter that compresses the Body of a [`Response`](crate::reply::Response)</span>
+<span class="doccomment">/// Create a wrapping filter that compresses the Body of a [`ResponseBody`](salvo_core::http::ResponseBody)</span>
 <span class="doccomment">/// using deflate, adding `content-encoding: deflate` to the Response&#39;s [`HeaderMap`](hyper::HeaderMap)</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Example</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">/// use salvo_core::prelude::*;</span>
+<span class="doccomment">/// use salvo_extra::compression;</span>
+<span class="doccomment">/// use salvo_extra::serve::StaticFile;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// let route = salvo::get()</span>
-<span class="doccomment">///     .and(salvo::path::end())</span>
-<span class="doccomment">///     .and(salvo::fs::file(&quot;./README.md&quot;))</span>
-<span class="doccomment">///     .with(salvo::compression::deflate());</span>
+<span class="doccomment">/// let router = Router::new()</span>
+<span class="doccomment">///     .after(compression::deflate())</span>
+<span class="doccomment">///     .and(StaticFile::neww(&quot;./README.md&quot;));</span>
+<span class="doccomment">/// use salvo_core::prelude::*;</span>
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">deflate</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CompressionHandler</span> {
     <span class="ident">CompressionHandler</span>::<span class="ident">new</span>(<span class="ident">CompressionAlgo</span>::<span class="ident">DEFLATE</span>)
 }
 
-<span class="doccomment">/// Create a wrapping filter that compresses the Body of a [`Response`](crate::reply::Response)</span>
+<span class="doccomment">/// Create a wrapping filter that compresses the Body of a [`ResponseBody`](salvo_core::http::ResponseBody)</span>
 <span class="doccomment">/// using brotli, adding `content-encoding: br` to the Response&#39;s [`HeaderMap`](hyper::HeaderMap)</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Example</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">/// use salvo_core::prelude::*;</span>
+<span class="doccomment">/// use salvo_extra::compression;</span>
+<span class="doccomment">/// use salvo_extra::serve::StaticFile;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// let route = salvo::get()</span>
-<span class="doccomment">///     .and(salvo::path::end())</span>
-<span class="doccomment">///     .and(salvo::fs::file(&quot;./README.md&quot;))</span>
-<span class="doccomment">///     .with(salvo::compression::brotli());</span>
+<span class="doccomment">/// let router = Router::new()</span>
+<span class="doccomment">///     .after(compression::brotli())</span>
+<span class="doccomment">///     .and(StaticFile::neww(&quot;./README.md&quot;));</span>
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">brotli</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CompressionHandler</span> {
     <span class="ident">CompressionHandler</span>::<span class="ident">new</span>(<span class="ident">CompressionAlgo</span>::<span class="ident">BR</span>)
