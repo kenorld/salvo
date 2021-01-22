@@ -507,7 +507,7 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">catcher</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">CONTENT_TYPE</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">http</span>::{<span class="ident">Mime</span>, <span class="ident">Request</span>, <span class="ident">Response</span>, <span class="ident">ResponseBody</span>, <span class="ident">StatusCode</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">http</span>::{<span class="ident">Mime</span>, <span class="ident">Request</span>, <span class="ident">Response</span>, <span class="ident">StatusCode</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">routing</span>::{<span class="ident">PathState</span>, <span class="ident">Router</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tls&quot;</span>)]</span>
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">tls</span>::{<span class="ident">TlsAcceptor</span>, <span class="ident">TlsConfigBuilder</span>};
@@ -928,7 +928,7 @@
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hyper_response</span> <span class="op">=</span> <span class="ident">hyper</span>::<span class="ident">Response</span>::<span class="op">&lt;</span><span class="ident">hyper</span>::<span class="ident">Body</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="ident">hyper</span>::<span class="ident">Body</span>::<span class="ident">empty</span>());
 
             <span class="kw">if</span> <span class="ident">response</span>.<span class="ident">status_code</span>().<span class="ident">is_none</span>() {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ResponseBody</span>::<span class="prelude-val">None</span> <span class="op">=</span> <span class="ident">response</span>.<span class="ident">body</span> {
+                <span class="kw">if</span> <span class="ident">response</span>.<span class="ident">body</span>.<span class="ident">is_none</span>() {
                     <span class="ident">response</span>.<span class="ident">set_status_code</span>(<span class="ident">StatusCode</span>::<span class="ident">NOT_FOUND</span>);
                 } <span class="kw">else</span> {
                     <span class="ident">response</span>.<span class="ident">set_status_code</span>(<span class="ident">StatusCode</span>::<span class="ident">OK</span>);
@@ -963,7 +963,7 @@
                     <span class="string">&quot;Http response content type header is not set&quot;</span>
                 );
             }
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ResponseBody</span>::<span class="prelude-val">None</span> <span class="op">=</span> <span class="ident">response</span>.<span class="ident">body</span> {
+            <span class="kw">if</span> <span class="ident">response</span>.<span class="ident">body</span>.<span class="ident">is_none</span>() {
                 <span class="kw">if</span> <span class="ident">has_error</span> {
                     <span class="kw">for</span> <span class="ident">catcher</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">catchers</span> {
                         <span class="kw">if</span> <span class="ident">catcher</span>.<span class="ident">catch</span>(<span class="kw-2">&amp;</span><span class="ident">request</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">response</span>) {

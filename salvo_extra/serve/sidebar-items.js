@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Options",""],["Static",""]],"trait":[["StaticRoots",""]]});
+initSidebarItems({"struct":[["StaticDir",""],["StaticFile",""]]});
