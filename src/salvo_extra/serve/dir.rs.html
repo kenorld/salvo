@@ -307,10 +307,6 @@
 <span id="304">304</span>
 <span id="305">305</span>
 <span id="306">306</span>
-<span id="307">307</span>
-<span id="308">308</span>
-<span id="309">309</span>
-<span id="310">310</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">async_trait</span>::<span class="ident">async_trait</span>;
 <span class="kw">use</span> <span class="ident">chrono</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
@@ -398,10 +394,6 @@
     <span class="ident">options</span>: <span class="ident">Options</span>,
 }
 <span class="kw">impl</span> <span class="ident">StaticDir</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">StaticRoots</span> <span class="op">+</span> <span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">roots</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">StaticDir</span>::<span class="ident">new</span>(<span class="ident">roots</span>)
-    }
-
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">StaticRoots</span> <span class="op">+</span> <span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">roots</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">StaticDir</span>::<span class="ident">width_options</span>(<span class="ident">roots</span>, <span class="ident">Options</span>::<span class="ident">default</span>())
     }
