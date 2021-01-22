@@ -11,7 +11,7 @@ using deflate, adding <code>content-encoding: deflate</code> to the Response's <
 
 <span class="kw">let</span> <span class="ident">router</span> <span class="op">=</span> <span class="ident">Router</span>::<span class="ident">new</span>()
     .<span class="ident">after</span>(<span class="ident">compression</span>::<span class="ident">deflate</span>())
-    .<span class="ident">and</span>(<span class="ident">StaticFile</span>::<span class="ident">neww</span>(<span class="string">&quot;./README.md&quot;</span>));
+    .<span class="ident">and</span>(<span class="ident">StaticFile</span>::<span class="ident">new</span>(<span class="string">&quot;./README.md&quot;</span>));
 <span class="kw">use</span> <span class="ident">salvo_core</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;</pre></div>
 </div></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="salvo_extra"></div>
     <script src="../../main.js"></script><script defer src="../../search-index.js"></script></body></html>
