@@ -606,7 +606,7 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// use salvo_core::writer::file::NamedFile;</span>
+    <span class="doccomment">/// use salvo_core::fs::NamedFile;</span>
     <span class="doccomment">/// let file = NamedFile::open(&quot;foo.txt&quot;.into());</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open</span>(<span class="ident">path</span>: <span class="ident">PathBuf</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NamedFile</span><span class="op">&gt;</span> {
@@ -625,7 +625,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
     <span class="doccomment">/// # use std::io;</span>
-    <span class="doccomment">/// # use salvo_core::writer::file::NamedFile;</span>
+    <span class="doccomment">/// # use salvo_core::fs::NamedFile;</span>
     <span class="doccomment">/// # fn path() -&gt; io::Result&lt;()&gt; {</span>
     <span class="doccomment">/// let file = NamedFile::open(&quot;test.txt&quot;.into())?;</span>
     <span class="doccomment">/// assert_eq!(file.path().as_os_str(), &quot;foo.txt&quot;);</span>
