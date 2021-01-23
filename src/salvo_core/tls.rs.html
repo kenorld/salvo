@@ -579,7 +579,7 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">config</span> <span class="op">=</span> <span class="ident">ServerConfig</span>::<span class="ident">new</span>(<span class="ident">client_auth</span>);
         <span class="ident">config</span>
             .<span class="ident">set_single_cert_with_ocsp_and_sct</span>(<span class="ident">cert</span>, <span class="ident">key</span>, <span class="self">self</span>.<span class="ident">ocsp_resp</span>, <span class="ident">Vec</span>::<span class="ident">new</span>())
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="ident">TlsConfigError</span>::<span class="ident">InvalidKey</span>(<span class="ident">err</span>))<span class="question-mark">?</span>;
+            .<span class="ident">map_err</span>(<span class="ident">TlsConfigError</span>::<span class="ident">InvalidKey</span>)<span class="question-mark">?</span>;
         <span class="ident">config</span>.<span class="ident">set_protocols</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;h2&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;http/1.1&quot;</span>.<span class="ident">into</span>()]);
         <span class="prelude-val">Ok</span>(<span class="ident">config</span>)
     }

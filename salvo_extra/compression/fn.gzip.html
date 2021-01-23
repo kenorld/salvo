@@ -11,6 +11,6 @@ using gzip, adding <code>content-encoding: gzip</code> to the Response's <a href
 
 <span class="kw">let</span> <span class="ident">router</span> <span class="op">=</span> <span class="ident">Router</span>::<span class="ident">new</span>()
     .<span class="ident">after</span>(<span class="ident">compression</span>::<span class="ident">gzip</span>())
-    .<span class="ident">and</span>(<span class="ident">StaticFile</span>::<span class="ident">new</span>(<span class="string">&quot;./README.md&quot;</span>));</pre></div>
+    .<span class="ident">get</span>(<span class="ident">StaticFile</span>::<span class="ident">new</span>(<span class="string">&quot;./README.md&quot;</span>));</pre></div>
 </div></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="salvo_extra"></div>
     <script src="../../main.js"></script><script defer src="../../search-index.js"></script></body></html>

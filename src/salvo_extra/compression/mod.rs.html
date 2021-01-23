@@ -142,7 +142,6 @@
 <span id="139">139</span>
 <span id="140">140</span>
 <span id="141">141</span>
-<span id="142">142</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Compress the body of a response.</span>
 
@@ -244,7 +243,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// let router = Router::new()</span>
 <span class="doccomment">///     .after(compression::gzip())</span>
-<span class="doccomment">///     .and(StaticFile::new(&quot;./README.md&quot;));</span>
+<span class="doccomment">///     .get(StaticFile::new(&quot;./README.md&quot;));</span>
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">gzip</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CompressionHandler</span> {
     <span class="ident">CompressionHandler</span>::<span class="ident">new</span>(<span class="ident">CompressionAlgo</span>::<span class="ident">GZIP</span>)
@@ -262,8 +261,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// let router = Router::new()</span>
 <span class="doccomment">///     .after(compression::deflate())</span>
-<span class="doccomment">///     .and(StaticFile::new(&quot;./README.md&quot;));</span>
-<span class="doccomment">/// use salvo_core::prelude::*;</span>
+<span class="doccomment">///     .get(StaticFile::new(&quot;./README.md&quot;));</span>
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">deflate</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CompressionHandler</span> {
     <span class="ident">CompressionHandler</span>::<span class="ident">new</span>(<span class="ident">CompressionAlgo</span>::<span class="ident">DEFLATE</span>)
@@ -281,7 +279,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// let router = Router::new()</span>
 <span class="doccomment">///     .after(compression::brotli())</span>
-<span class="doccomment">///     .and(StaticFile::new(&quot;./README.md&quot;));</span>
+<span class="doccomment">///     .get(StaticFile::new(&quot;./README.md&quot;));</span>
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">brotli</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CompressionHandler</span> {
     <span class="ident">CompressionHandler</span>::<span class="ident">new</span>(<span class="ident">CompressionAlgo</span>::<span class="ident">BR</span>)

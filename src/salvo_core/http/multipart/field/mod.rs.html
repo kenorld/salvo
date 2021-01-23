@@ -308,7 +308,6 @@
 <span id="305">305</span>
 <span id="306">306</span>
 <span id="307">307</span>
-<span id="308">308</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2017-2019 `multipart-async` Crate Developers</span>
 <span class="comment">//</span>
@@ -406,7 +405,6 @@
             <span class="ident">data</span>: <span class="ident">FieldData</span> {
                 <span class="ident">multipart</span>: <span class="macro">multipart</span><span class="macro">!</span>(<span class="ident">take</span>),
             },
-            <span class="ident">_priv</span>: (),
         })))
     }
 }
@@ -414,6 +412,7 @@
 <span class="doccomment">/// A single field in a multipart stream.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The data of the field is provided as a `Stream` impl in the `data` field.</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Field</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">S</span>: <span class="ident">TryStream</span> <span class="op">+</span> <span class="lifetime">&#39;a</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">S</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ReadError</span><span class="op">&gt;</span>,
@@ -422,7 +421,6 @@
     <span class="kw">pub</span> <span class="ident">headers</span>: <span class="ident">FieldHeaders</span>,
     <span class="doccomment">/// The data of this field in the request, represented as a stream of chunks.</span>
     <span class="kw">pub</span> <span class="ident">data</span>: <span class="ident">FieldData</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">S</span><span class="op">&gt;</span>,
-    <span class="ident">_priv</span>: (),
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">TryStream</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Field</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">S</span><span class="op">&gt;</span>
